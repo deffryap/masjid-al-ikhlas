@@ -7,7 +7,6 @@ import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 import JadwalSholat from '@/components/features/prayer-times/JadwalSholat';
 import PrayerTimesHero from '@/components/features/prayer-times/PrayerTimesHero';
-import MagneticBackground from '@/components/ui/MagneticBackground';
 import EventCard from '@/components/features/events/EventCard';
 import EventModal from '@/components/features/events/EventModal';
 import KajianArchiveModal from '@/components/features/events/KajianArchiveModal';
@@ -84,8 +83,12 @@ export default function Home() {
       {/* Hero Section */}
       <section id="home" className="relative min-h-[90vh] flex flex-col items-center justify-center overflow-hidden bg-[#FFF8F0]">
 
-        {/* Magnetic Background Effect */}
-        <MagneticBackground />
+        {/* Background Patterns - Subtle Islamic Geometry */}
+        <div className="absolute inset-0 opacity-[0.03] z-0 pointer-events-none"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+          }}
+        />
 
         {/* Central Content */}
         <div className="container mx-auto px-4 z-10 text-center flex-1 flex flex-col justify-center items-center pt-28 pb-32 pointer-events-none">
