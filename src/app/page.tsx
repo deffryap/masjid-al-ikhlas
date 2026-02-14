@@ -2,12 +2,13 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ChevronRight, ArrowRight } from 'lucide-react';
+import { ChevronRight, ArrowRight, Calendar, MapPin, BookOpen, Heart, Users, Star } from 'lucide-react';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 import JadwalSholat from '@/components/features/prayer-times/JadwalSholat';
 import EventCard from '@/components/features/events/EventCard';
 import EventModal from '@/components/features/events/EventModal';
+import KajianArchiveModal from '@/components/features/events/KajianArchiveModal';
 import GalleryGrid from '@/components/features/gallery/GalleryGrid';
 import Navbar from '@/components/layout/Navbar';
 import { supabase } from '@/lib/supabase';
@@ -21,6 +22,7 @@ export default function Home() {
   // Modal State
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isArchiveModalOpen, setIsArchiveModalOpen] = useState(false);
 
   // Tab State for Kajian
   const [kajianTab, setKajianTab] = useState<'upcoming' | 'past'>('upcoming');
@@ -79,6 +81,7 @@ export default function Home() {
       />
 
       {/* Hero Section */}
+      {/* Hero Section */}
       <section id="home" className="relative h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image
@@ -88,59 +91,45 @@ export default function Home() {
             className="object-cover"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-br from-emerald-950/90 via-emerald-900/60 to-slate-900/40" />
+          <div className="absolute inset-0 bg-gradient-to-b from-emerald-950/80 via-transparent to-slate-900/90" />
         </div>
 
-        <div className="container mx-auto px-4 z-10 grid md:grid-cols-12 gap-12 items-center pt-20">
-          <div className="md:col-span-7 text-white space-y-8">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-            >
-              <div className="inline-flex items-center px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-emerald-300 font-medium text-sm mb-6">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 mr-2 animate-pulse"></span>
-                Selamat Datang di Website Resmi
-              </div>
-              <h1 className="text-5xl md:text-7xl font-bold font-display leading-tight mb-6">
-                Menyemai Iman, <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-200">
-                  Membangun Peradaban
-                </span>
-              </h1>
-              <p className="text-lg md:text-xl text-slate-200 font-light max-w-xl leading-relaxed">
-                Masjid Al-Ikhlas hadir sebagai pusat dakwah dan ibadah yang nyaman, modern, dan inklusif bagi seluruh umat.
-              </p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="flex flex-wrap gap-4"
-            >
-              <button
-                onClick={() => document.getElementById('jadwal')?.scrollIntoView({ behavior: 'smooth' })}
-                className="px-8 py-3.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full font-semibold transition-all shadow-lg shadow-emerald-500/30 flex items-center group"
-              >
-                Lihat Jadwal Sholat
-                <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </button>
-              <button className="px-8 py-3.5 bg-white/5 hover:bg-white/10 text-white backdrop-blur-md rounded-full font-semibold transition-colors border border-white/20">
-                Layanan Umat
-              </button>
-            </motion.div>
-          </div>
-
+        <div className="container mx-auto px-4 z-10 text-center text-white pt-20">
           <motion.div
-            id="jadwal"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="md:col-span-5 relative"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="max-w-4xl mx-auto"
           >
-            <div className="absolute -inset-4 bg-emerald-500/20 blur-xl rounded-full opacity-50"></div>
-            <JadwalSholat />
+            <div className="inline-flex items-center px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-emerald-300 font-medium text-sm mb-8">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 mr-2 animate-pulse"></span>
+              Selamat Datang di Website Resmi
+            </div>
+            <h1 className="text-5xl md:text-7xl font-bold font-display leading-tight mb-8 drop-shadow-lg">
+              Menyemai Iman, <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-200">
+                Membangun Peradaban
+              </span>
+            </h1>
+            <p className="text-lg md:text-2xl text-slate-100 font-light max-w-2xl mx-auto leading-relaxed mb-10 drop-shadow-md">
+              Masjid Al-Ikhlas hadir sebagai pusat dakwah dan ibadah yang nyaman, modern, dan inklusif bagi seluruh umat.
+            </p>
+
+            <div className="flex flex-wrap justify-center gap-4">
+              <button
+                onClick={() => document.getElementById('kajian')?.scrollIntoView({ behavior: 'smooth' })}
+                className="px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full font-bold transition-all shadow-lg shadow-emerald-600/30 flex items-center group text-lg"
+              >
+                Lihat Agenda Kajian
+                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </button>
+              <button
+                onClick={() => document.getElementById('kegiatan')?.scrollIntoView({ behavior: 'smooth' })}
+                className="px-8 py-4 bg-white/10 hover:bg-white/20 text-white backdrop-blur-md rounded-full font-bold transition-colors border border-white/30 text-lg"
+              >
+                Program Umat
+              </button>
+            </div>
           </motion.div>
         </div>
 
@@ -157,142 +146,164 @@ export default function Home() {
       </section>
 
       {/* Kajian Section */}
+      {/* Kajian Section */}
       <section id="kajian" className="py-24 bg-white">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
-            <div>
-              <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-3">Kajian Rutin & Tabligh Akbar</h2>
-              <p className="text-slate-500 text-lg">Perkaya ilmu agama melalui majelis ilmu bersama asatidz terpercaya.</p>
-            </div>
-
-            {/* Tabs */}
-            <div className="mt-6 md:mt-0 flex p-1 bg-slate-100 rounded-lg">
-              <button
-                onClick={() => setKajianTab('upcoming')}
-                className={cn(
-                  "px-6 py-2 rounded-md font-medium text-sm transition-all",
-                  kajianTab === 'upcoming'
-                    ? "bg-white text-emerald-600 shadow-sm"
-                    : "text-slate-500 hover:text-slate-700"
-                )}
-              >
-                Akan Datang
-              </button>
-              <button
-                onClick={() => setKajianTab('past')}
-                className={cn(
-                  "px-6 py-2 rounded-md font-medium text-sm transition-all",
-                  kajianTab === 'past'
-                    ? "bg-white text-emerald-600 shadow-sm"
-                    : "text-slate-500 hover:text-slate-700"
-                )}
-              >
-                Arsip Kajian
-              </button>
-            </div>
+          <div className="mb-12 text-center md:text-left">
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-3">Kajian Rutin & Tabligh Akbar</h2>
+            <p className="text-slate-500 text-lg">Perkaya ilmu agama melalui majelis ilmu bersama asatidz terpercaya.</p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {loading ? (
-              <div className="col-span-3 text-center py-20">
-                <div className="animate-spin w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full mx-auto mb-4"></div>
-                <p className="text-slate-500">Memuat jadwal kajian...</p>
+          <div className="grid md:grid-cols-12 gap-8">
+            {/* Left Column: Recommended / Next Upcoming Kajian */}
+            <div className="md:col-span-7">
+              <h3 className="text-xl font-bold text-slate-700 mb-6 flex items-center">
+                <span className="w-2 h-8 bg-emerald-500 rounded-full mr-3"></span>
+                Kajian Akan Datang
+              </h3>
+              {upcomingKajian.length > 0 ? (
+                <div onClick={() => openModal(upcomingKajian[0])} className="group relative h-[400px] rounded-2xl overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition-all">
+                  <Image
+                    src={upcomingKajian[0].image_url || 'https://images.unsplash.com/photo-1542042958-37c223ebbb36?q=80&w=800&auto=format&fit=crop'}
+                    alt={upcomingKajian[0].title}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent p-8 flex flex-col justify-end">
+                    <span className="inline-block px-3 py-1 bg-emerald-600 text-white text-xs font-bold rounded-lg mb-3 w-fit">
+                      TERDEKAT
+                    </span>
+                    <h4 className="text-3xl font-bold text-white mb-2 leading-tight">{upcomingKajian[0].title}</h4>
+                    <div className="flex items-center text-slate-200 mb-4 text-sm">
+                      <Calendar className="w-4 h-4 mr-2" />
+                      {format(new Date(upcomingKajian[0].date_start), 'EEEE, d MMMM yyyy - HH:mm', { locale: id })} WIB
+                    </div>
+                    <p className="text-slate-300 line-clamp-2 md:w-3/4">{upcomingKajian[0].description}</p>
+                  </div>
+                </div>
+              ) : (
+                <div className="h-[300px] flex flex-col items-center justify-center bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200 text-slate-400">
+                  <Calendar className="w-12 h-12 mb-4 opacity-50" />
+                  <p>Belum ada jadwal kajian mendatang.</p>
+                </div>
+              )}
+            </div>
+
+            {/* Right Column: Archive List */}
+            <div className="md:col-span-5 flex flex-col">
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-xl font-bold text-slate-700 flex items-center">
+                  <span className="w-2 h-8 bg-slate-300 rounded-full mr-3"></span>
+                  Arsip Kajian
+                </h3>
+                <button
+                  onClick={() => setIsArchiveModalOpen(true)}
+                  className="text-emerald-600 text-sm font-semibold hover:text-emerald-700 hover:underline"
+                >
+                  Lihat Semua
+                </button>
               </div>
-            ) : displayedKajian.length === 0 ? (
-              <div className="col-span-3 text-center py-20 bg-slate-50 rounded-2xl border border-dashed border-slate-200">
-                <p className="text-slate-500">Belum ada data kajian untuk ditampilkan.</p>
+
+              <div className="space-y-4 flex-1">
+                {pastKajian.slice(0, 3).map((event) => (
+                  <div
+                    key={event.id}
+                    onClick={() => openModal(event)}
+                    className="flex items-start p-4 bg-slate-50 rounded-xl border border-slate-100 hover:border-emerald-200 hover:bg-white transition-all cursor-pointer group"
+                  >
+                    <div className="relative w-20 h-20 bg-slate-200 rounded-lg overflow-hidden shrink-0 mr-4">
+                      <Image src={event.image_url || 'https://images.unsplash.com/photo-1542042958-37c223ebbb36'} fill alt={event.title} className="object-cover" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h4 className="text-base font-bold text-slate-800 group-hover:text-emerald-700 truncate transition-colors">{event.title}</h4>
+                      <p className="text-xs text-slate-500 mb-2">{format(new Date(event.date_start), 'd MMMM yyyy', { locale: id })}</p>
+                      <p className="text-sm text-slate-600 line-clamp-2 text-xs">{event.description}</p>
+                    </div>
+                  </div>
+                ))}
+                {pastKajian.length === 0 && (
+                  <div className="text-center py-10 text-slate-400 bg-slate-50 rounded-xl border border-dashed border-slate-200">
+                    Belum ada arsip kajian.
+                  </div>
+                )}
               </div>
-            ) : (
-              displayedKajian.map((event) => (
-                <EventCard
-                  key={event.id}
-                  title={event.title}
-                  description={event.description}
-                  date={new Date(event.date_start)}
-                  location={event.location}
-                  imageUrl={event.image_url || 'https://images.unsplash.com/photo-1564121211835-e88c85223a8b?q=80&w=800&auto=format&fit=crop'}
-                  onClick={() => openModal(event)}
-                />
-              ))
-            )}
+            </div>
           </div>
         </div>
       </section>
+
+      <KajianArchiveModal
+        isOpen={isArchiveModalOpen}
+        onClose={() => setIsArchiveModalOpen(false)}
+        events={pastKajian}
+        onEventClick={openModal}
+      />
 
       {/* Kegiatan Masjid Section (Updated) */}
       <section id="kegiatan" className="py-24 bg-slate-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <span className="text-emerald-600 font-bold tracking-wider uppercase text-sm mb-2 block">Aktivitas Sosial & Kemasyarakatan</span>
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-800">Kegiatan Masjid</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-800">Program & Layanan Umat</h2>
             <div className="w-24 h-1.5 bg-emerald-500 mx-auto mt-4 rounded-full"></div>
           </div>
 
           <div className="grid md:grid-cols-4 gap-6">
-            {/* Featured Large Card */}
-            <div className="md:col-span-2 md:row-span-2 relative rounded-2xl overflow-hidden group min-h-[400px]">
-              <Image
-                src="https://images.unsplash.com/photo-1593113598332-cd288d649433?q=80&w=800&auto=format&fit=crop"
-                alt="Activities"
-                fill
-                className="object-cover transition-transform duration-700 group-hover:scale-110"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent">
-                <div className="absolute bottom-0 left-0 p-8">
-                  <h3 className="text-2xl font-bold text-white mb-2">Program Infaq Beras</h3>
-                  <p className="text-slate-200 mb-4 line-clamp-2">
-                    Menyalurkan bantuan beras terbaik untuk santri penghafal Quran, yatim piatu, dan dhuafa di lingkungan sekitar.
-                  </p>
-                  <button className="text-emerald-300 font-semibold hover:text-emerald-200 flex items-center">
-                    Selengkapnya <ChevronRight className="w-4 h-4 ml-1" />
-                  </button>
-                </div>
+            {/* Card 1: TPA */}
+            <div className="bg-white rounded-2xl p-8 shadow-sm border border-slate-100 hover:shadow-lg hover:-translate-y-1 transition-all group">
+              <div className="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center mb-6 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                <BookOpen className="w-7 h-7" />
               </div>
+              <h3 className="text-xl font-bold text-slate-800 mb-3">TPA Al-Ikhlas</h3>
+              <p className="text-slate-500 text-sm leading-relaxed mb-4">
+                Membentuk generasi Qur'ani yang berakhlak mulia melalui pendidikan Al-Qur'an sejak dini.
+              </p>
+              <a href="#" className="text-emerald-600 font-semibold text-sm flex items-center hover:underline">
+                Selengkapnya <ChevronRight className="w-4 h-4 ml-1" />
+              </a>
             </div>
 
-            {/* Dynamic Activities */}
-            {upcomingActivities.length > 0 ? (
-              upcomingActivities.map((event) => (
-                <div key={event.id} className="md:col-span-2 bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex flex-col md:flex-row gap-6 hover:shadow-md transition-shadow cursor-pointer" onClick={() => openModal(event)}>
-                  <div className="w-full md:w-1/3 relative h-32 md:h-auto rounded-xl overflow-hidden shrink-0">
-                    <Image
-                      src={event.image_url || 'https://images.unsplash.com/photo-1519818187420-8e49de7fc4f2?q=80&w=800&auto=format&fit=crop'}
-                      alt={event.title}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <div className="flex-1">
-                    <span className="text-xs font-bold text-emerald-600 uppercase mb-2 block">
-                      {format(new Date(event.date_start), 'd MMM yyyy', { locale: id })}
-                    </span>
-                    <h4 className="text-lg font-bold text-slate-800 mb-2">{event.title}</h4>
-                    <p className="text-slate-500 text-sm line-clamp-2 mb-3">{event.description}</p>
-                    <span className="text-sm font-semibold text-slate-700 flex items-center">
-                      Lihat Detail <ChevronRight className="w-4 h-4 ml-1" />
-                    </span>
-                  </div>
-                </div>
-              ))
-            ) : (
-              // Fallback static items if no DB data
-              <>
-                <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-                  <h4 className="text-lg font-bold text-slate-800 mb-2">Santunan Yatim</h4>
-                  <p className="text-slate-500 text-sm mb-4">Kegiatan rutin bulanan berbagi kebahagiaan bersama anak-anak yatim.</p>
-                  <div className="h-40 relative rounded-xl overflow-hidden bg-slate-100">
-                    <Image src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=800&auto=format&fit=crop" fill alt="Santunan" className="object-cover" />
-                  </div>
-                </div>
-                <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-                  <h4 className="text-lg font-bold text-slate-800 mb-2">Gotong Royong</h4>
-                  <p className="text-slate-500 text-sm mb-4">Membersihkan lingkungan masjid dan sekitarnya setiap Ahad pagi.</p>
-                  <div className="h-40 relative rounded-xl overflow-hidden bg-slate-100">
-                    <Image src="https://images.unsplash.com/photo-1581578731117-10d521d3b0e9?q=80&w=800&auto=format&fit=crop" fill alt="Gotong Royong" className="object-cover" />
-                  </div>
-                </div>
-              </>
-            )}
+            {/* Card 2: Kajian Ahad Pagi */}
+            <div className="bg-white rounded-2xl p-8 shadow-sm border border-slate-100 hover:shadow-lg hover:-translate-y-1 transition-all group">
+              <div className="w-14 h-14 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center mb-6 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                <Users className="w-7 h-7" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-800 mb-3">Kajian Ahad Pagi</h3>
+              <p className="text-slate-500 text-sm leading-relaxed mb-4">
+                Siraman rohani rutin setiap pekan untuk mempererat ukhuwah dan menambah wawasan keislaman.
+              </p>
+              <a href="#" className="text-blue-600 font-semibold text-sm flex items-center hover:underline">
+                Jadwal Kajian <ChevronRight className="w-4 h-4 ml-1" />
+              </a>
+            </div>
+
+            {/* Card 3: Wakaf & Infaq */}
+            <div className="bg-white rounded-2xl p-8 shadow-sm border border-slate-100 hover:shadow-lg hover:-translate-y-1 transition-all group">
+              <div className="w-14 h-14 bg-amber-100 text-amber-600 rounded-xl flex items-center justify-center mb-6 group-hover:bg-amber-600 group-hover:text-white transition-colors">
+                <Heart className="w-7 h-7" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-800 mb-3">Wakaf & Infaq</h3>
+              <p className="text-slate-500 text-sm leading-relaxed mb-4">
+                Salurkan harta terbaik Anda untuk pembangunan umat dan keberkahan yang terus mengalir.
+              </p>
+              <a href="#" className="text-amber-600 font-semibold text-sm flex items-center hover:underline">
+                Salurkan Donasi <ChevronRight className="w-4 h-4 ml-1" />
+              </a>
+            </div>
+
+            {/* Card 4: Tahsin Al-Qur'an */}
+            <div className="bg-white rounded-2xl p-8 shadow-sm border border-slate-100 hover:shadow-lg hover:-translate-y-1 transition-all group">
+              <div className="w-14 h-14 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center mb-6 group-hover:bg-purple-600 group-hover:text-white transition-colors">
+                <Star className="w-7 h-7" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-800 mb-3">Tahsin Al-Qur'an</h3>
+              <p className="text-slate-500 text-sm leading-relaxed mb-4">
+                Perbaiki bacaan Al-Qur'an Anda bersanad, terbuka untuk ikhwan dan akhwat dewasa.
+              </p>
+              <a href="#" className="text-purple-600 font-semibold text-sm flex items-center hover:underline">
+                Daftar Sekarang <ChevronRight className="w-4 h-4 ml-1" />
+              </a>
+            </div>
           </div>
         </div>
       </section>

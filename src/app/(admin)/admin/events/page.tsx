@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
-import { Plus, Trash2, Calendar, MapPin } from 'lucide-react';
+import { Plus, Trash2, Calendar, MapPin, Edit } from 'lucide-react';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 
@@ -80,10 +80,17 @@ export default function EventsAdminPage() {
                                             {event.location || '-'}
                                         </div>
                                     </td>
-                                    <td className="px-6 py-4 text-right">
+                                    <td className="px-6 py-4 text-right space-x-2">
+                                        <Link
+                                            href={`/admin/events/${event.id}`}
+                                            className="inline-flex text-blue-600 hover:text-blue-700 p-2 hover:bg-blue-50 rounded-lg transition-colors"
+                                            title="Edit"
+                                        >
+                                            <Edit className="w-4 h-4" />
+                                        </Link>
                                         <button
                                             onClick={() => handleDelete(event.id)}
-                                            className="text-red-600 hover:text-red-700 p-2 hover:bg-red-50 rounded-lg transition-colors"
+                                            className="inline-flex text-red-600 hover:text-red-700 p-2 hover:bg-red-50 rounded-lg transition-colors"
                                             title="Hapus"
                                         >
                                             <Trash2 className="w-4 h-4" />
