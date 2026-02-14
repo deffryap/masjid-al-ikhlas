@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'https://kjbtjcmhkiotkybzleql.supabase.co', // Ganti dengan ID project Supabase Anda
+        hostname: 'kjbtjcmhkiotkybzleql.supabase.co',
         port: '',
         pathname: '/storage/v1/object/public/**',
       },
