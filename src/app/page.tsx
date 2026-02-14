@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useMotionTemplate, useMotionValue } from 'framer-motion';
 import { ChevronRight, ArrowRight, Calendar, MapPin, BookOpen, Heart, Users, Star } from 'lucide-react';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
@@ -24,6 +24,10 @@ export default function Home() {
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isArchiveModalOpen, setIsArchiveModalOpen] = useState(false);
+
+  // Mouse Movement for Hero
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
 
   // Tab State for Kajian
   const [kajianTab, setKajianTab] = useState<'upcoming' | 'past'>('upcoming');
@@ -81,42 +85,34 @@ export default function Home() {
       />
 
       {/* Hero Section */}
-      <section id="home" className="relative min-h-[90vh] flex flex-col items-center justify-center overflow-hidden bg-[#FFF8F0]">
+      <section
+        id="home"
+        className="relative min-h-[90vh] flex flex-col items-center justify-center overflow-hidden bg-[#FFF8F0] group/hero"
+        onMouseMove={({ currentTarget, clientX, clientY }) => {
+          const { left, top } = currentTarget.getBoundingClientRect();
+          mouseX.set(clientX - left);
+          mouseY.set(clientY - top);
+        }}
+      >
 
-        {/* Background Patterns - Subtle Scale/Parallax on Hover */}
+        {/* Spotlight Effect */}
         <motion.div
-          className="absolute inset-0 opacity-[0.03] z-0"
-          whileHover={{ scale: 1.1, rotate: 1 }}
-          transition={{ duration: 10, ease: "linear", repeat: Infinity, repeatType: "mirror" }}
+          className="pointer-events-none absolute -inset-px opacity-0 group-hover/hero:opacity-100 transition duration-300 z-0"
+          style={{
+            background: useMotionTemplate`
+              radial-gradient(
+                650px circle at ${mouseX}px ${mouseY}px,
+                rgba(16, 185, 129, 0.1),
+                transparent 80%
+              )
+            `,
+          }}
+        />
+
+        {/* Background Patterns */}
+        <div className="absolute inset-0 opacity-[0.03] z-0 pointer-events-none"
           style={{
             backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
-          }}
-        />
-
-        {/* Interactive Gradient Spot */}
-        <motion.div
-          className="absolute top-[-20%] right-[-10%] w-[500px] h-[500px] bg-emerald-400/10 blur-[100px] rounded-full pointer-events-none"
-          animate={{
-            scale: [1, 1.2, 1],
-            x: [0, 50, 0],
-            y: [0, 30, 0],
-          }}
-          transition={{
-            duration: 10,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
-        <motion.div
-          className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-teal-300/10 blur-[120px] rounded-full pointer-events-none"
-          animate={{
-            scale: [1.2, 1, 1.2],
-            x: [0, -40, 0],
-          }}
-          transition={{
-            duration: 15,
-            repeat: Infinity,
-            ease: "easeInOut"
           }}
         />
 
@@ -127,8 +123,21 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <h1 className="text-5xl md:text-8xl font-bold font-display text-slate-800 mb-6 tracking-tight">
-              Masjid Al-Ikhlas
+            <h1 className="text-5xl md:text-8xl font-bold font-display text-slate-800 mb-6 tracking-tight relative">
+              <span className="relative z-10">Masjid Al-Ikhlas</span>
+              {/* Text Glow Effect */}
+              <motion.span
+                className="absolute inset-0 blur-2xl z-0 opacity-50"
+                style={{
+                  background: useMotionTemplate`
+                          radial-gradient(
+                            200px circle at ${mouseX}px ${mouseY}px,
+                            rgba(52, 211, 153, 0.4),
+                            transparent 80%
+                          )
+                        `,
+                }}
+                aria-hidden="true">Masjid Al-Ikhlas</motion.span>
             </h1>
             <p className="text-xl md:text-2xl text-slate-600 font-light mb-12 max-w-2xl mx-auto">
               Pusat Dakwah dan Ibadah yang Nyaman, Modern, dan Inklusif.
