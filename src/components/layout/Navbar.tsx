@@ -12,7 +12,7 @@ export default function Navbar() {
 
     useEffect(() => {
         const handleScroll = () => {
-            setScrolled(window.scrollY > 50);
+            setScrolled(window.scrollY > 20);
         };
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
@@ -27,82 +27,82 @@ export default function Navbar() {
     ];
 
     return (
-        <nav
-            className={cn(
-                'fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out',
-                scrolled ? 'bg-white/90 backdrop-blur-md shadow-sm py-4' : 'bg-transparent py-6'
-            )}
-        >
-            <div className="container mx-auto px-4 flex justify-between items-center">
-                {/* Logo */}
-                <Link href="/" className="flex items-center space-x-2">
-                    <div className="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center text-white font-bold text-xl shadow-lg">
-                        M
+        <>
+            <motion.nav
+                initial={{ y: -100, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.5 }}
+                className={cn(
+                    'fixed top-6 left-1/2 -translate-x-1/2 z-50 transition-all duration-300',
+                    'w-[90%] max-w-4xl'
+                )}
+            >
+                <div className={cn(
+                    "rounded-full px-6 py-3 flex justify-between items-center transition-all duration-300",
+                    scrolled
+                        ? "bg-white/90 backdrop-blur-md shadow-lg border border-slate-200/50"
+                        : "bg-white/80 backdrop-blur-sm shadow-md border border-white/20"
+                )}>
+                    {/* Logo */}
+                    <Link href="/" className="flex items-center space-x-2 mr-8">
+                        <div className="w-8 h-8 bg-emerald-600 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-sm">
+                            M
+                        </div>
+                        <span className="text-lg font-bold tracking-tight text-slate-800">
+                            Al-Ikhlas
+                        </span>
+                    </Link>
+
+                    {/* Desktop Menu */}
+                    <div className="hidden md:flex items-center space-x-1 bg-slate-100/50 p-1 rounded-full border border-slate-200/50">
+                        {navLinks.map((link) => (
+                            <Link
+                                key={link.name}
+                                href={link.href}
+                                className="px-4 py-1.5 rounded-full text-sm font-medium text-slate-600 hover:text-emerald-700 hover:bg-white transition-all"
+                            >
+                                {link.name}
+                            </Link>
+                        ))}
                     </div>
-                    <span className={cn(
-                        "text-xl font-bold tracking-tight transition-colors",
-                        scrolled ? "text-slate-800" : "text-white"
-                    )}>
-                        Al-Ikhlas
-                    </span>
-                </Link>
 
-                {/* Desktop Menu */}
-                <div className="hidden md:flex items-center space-x-8">
-                    {navLinks.map((link) => (
-                        <Link
-                            key={link.name}
-                            href={link.href}
-                            className={cn(
-                                "text-sm font-medium transition-colors hover:text-emerald-500",
-                                scrolled ? "text-slate-600" : "text-white/90 hover:text-white"
-                            )}
-                        >
-                            {link.name}
-                        </Link>
-                    ))}
+                    {/* Mobile Menu Button */}
+                    <button
+                        className="md:hidden p-2 text-slate-600 hover:bg-slate-100 rounded-full transition-colors"
+                        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                    >
+                        {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                    </button>
 
+                    {/* Mobile Menu Placeholder (Hidden on Desktop) */}
+                    <div className="hidden md:block w-8"></div>
                 </div>
-
-                {/* Mobile Menu Button */}
-                <button
-                    className="md:hidden p-2"
-                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                >
-                    {mobileMenuOpen ? (
-                        <X className={cn("w-6 h-6", scrolled ? "text-slate-800" : "text-white")} />
-                    ) : (
-                        <Menu className={cn("w-6 h-6", scrolled ? "text-slate-800" : "text-white")} />
-                    )}
-                </button>
-            </div>
+            </motion.nav>
 
             {/* Mobile Menu Overlay */}
             <AnimatePresence>
                 {mobileMenuOpen && (
                     <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        className="md:hidden bg-white border-t border-slate-100 overflow-hidden"
+                        initial={{ opacity: 0, y: -20, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: -20, scale: 0.95 }}
+                        className="fixed top-24 left-4 right-4 z-40 bg-white rounded-2xl shadow-xl border border-slate-100 p-4 md:hidden origin-top"
                     >
-                        <div className="container mx-auto px-4 py-4 space-y-4">
+                        <div className="flex flex-col space-y-2">
                             {navLinks.map((link) => (
                                 <Link
                                     key={link.name}
                                     href={link.href}
                                     onClick={() => setMobileMenuOpen(false)}
-                                    className="block text-slate-600 hover:text-emerald-600 font-medium py-2"
+                                    className="px-4 py-3 rounded-xl text-slate-600 hover:bg-emerald-50 hover:text-emerald-600 font-medium transition-colors"
                                 >
                                     {link.name}
                                 </Link>
                             ))}
-                            <hr className="border-slate-100" />
-
                         </div>
                     </motion.div>
                 )}
             </AnimatePresence>
-        </nav>
+        </>
     );
 }
