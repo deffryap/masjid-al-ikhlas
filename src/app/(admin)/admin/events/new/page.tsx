@@ -80,52 +80,52 @@ export default function NewEventPage() {
             <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-6 max-w-2xl">
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-1">Judul Kegiatan</label>
+                        <label className="block text-sm font-medium text-slate-800 mb-1">Judul Kegiatan</label>
                         <input
                             type="text"
                             required
                             value={formData.title}
                             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                            className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                            className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none text-slate-900 placeholder:text-slate-500"
                             placeholder="Contoh: Kajian Rutin..."
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-1">Waktu Mulai</label>
+                        <label className="block text-sm font-medium text-slate-800 mb-1">Waktu Mulai</label>
                         <input
                             type="datetime-local"
                             required
                             value={formData.date_start}
                             onChange={(e) => setFormData({ ...formData, date_start: e.target.value })}
-                            className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                            className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none text-slate-900 placeholder:text-slate-500"
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-1">Lokasi</label>
+                        <label className="block text-sm font-medium text-slate-800 mb-1">Lokasi</label>
                         <input
                             type="text"
                             value={formData.location}
                             onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                            className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                            className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none text-slate-900 placeholder:text-slate-500"
                             placeholder="Contoh: Aula Utama"
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-1">Deskripsi</label>
+                        <label className="block text-sm font-medium text-slate-800 mb-1">Deskripsi</label>
                         <textarea
                             rows={4}
                             value={formData.description}
                             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                            className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                            className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none text-slate-900 placeholder:text-slate-500"
                             placeholder="Deskripsi lengkap kegiatan..."
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-1">Poster / Gambar</label>
+                        <label className="block text-sm font-medium text-slate-800 mb-1">Poster / Gambar</label>
                         <div className="flex items-center space-x-4">
                             <input
                                 type="file"
