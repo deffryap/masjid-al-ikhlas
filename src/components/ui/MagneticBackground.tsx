@@ -96,27 +96,25 @@ function MagneticFiling({ centerX, centerY, mouseX, mouseY }: { centerX: number,
         return `${angle}rad`;
     });
 
-    // Distance based opacity/scale
-    const style = useTransform([mouseX, mouseY], ([mx, my]: number[]) => {
+    // Distance based intensity
+    const intensity = useTransform([mouseX, mouseY], ([mx, my]: number[]) => {
         const dx = mx - centerX;
         const dy = my - centerY;
         const dist = Math.sqrt(dx * dx + dy * dy);
 
         // Interact radius
         const maxDist = 800;
-        const intensity = Math.max(0, 1 - dist / maxDist);
-
-        return {
-            opacity: 0.3 + (intensity * 0.7), // Minimum opacity 0.3 so it's always barely visible
-            scale: 1 + (intensity * 0.5),
-            width: 15 + (intensity * 10), // Grow slightly when active
-        };
+        return Math.max(0, 1 - dist / maxDist);
     });
+
+    const opacity = useTransform(intensity, v => 0.3 + (v * 0.7));
+    const scale = useTransform(intensity, v => 1 + (v * 0.5));
+    const width = useTransform(intensity, v => 15 + (v * 10));
 
     return (
         <div className="w-full h-full flex items-center justify-center">
             <motion.div
-                style={{ rotate, ...style }}
+                style={{ rotate, opacity, scale, width }}
                 className="h-[3px] bg-slate-400 rounded-full origin-center" // Darker, thicker
             />
         </div>
