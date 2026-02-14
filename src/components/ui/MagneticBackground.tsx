@@ -3,8 +3,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 
-const GRID_SIZE = 35; // Slightly denser
-const LINE_LENGTH = 10; // Shorter base length
+const GRID_SIZE = 20; // Slightly denser
+const LINE_LENGTH = 5; // Shorter base length
 
 export default function MagneticBackground() {
     const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
