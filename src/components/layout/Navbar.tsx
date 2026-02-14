@@ -20,9 +20,8 @@ export default function Navbar() {
 
     const navLinks = [
         { name: 'Beranda', href: '#home' },
-        { name: 'Jadwal Sholat', href: '#jadwal' },
-        { name: 'Kajian', href: '#kajian' },
         { name: 'Kegiatan', href: '#kegiatan' },
+        { name: 'Kajian', href: '#kajian' },
         { name: 'Galeri', href: '#galeri' },
         { name: 'Kontak', href: '#footer' },
     ];
@@ -62,17 +61,7 @@ export default function Navbar() {
                             {link.name}
                         </Link>
                     ))}
-                    <Link
-                        href="/login"
-                        className={cn(
-                            "px-5 py-2 rounded-full font-medium text-sm transition-all",
-                            scrolled
-                                ? "bg-slate-900 text-white hover:bg-slate-800"
-                                : "bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm"
-                        )}
-                    >
-                        Login
-                    </Link>
+
                 </div>
 
                 {/* Mobile Menu Button */}
@@ -109,13 +98,7 @@ export default function Navbar() {
                                 </Link>
                             ))}
                             <hr className="border-slate-100" />
-                            <Link
-                                href="/login"
-                                onClick={() => setMobileMenuOpen(false)}
-                                className="block text-center bg-emerald-600 text-white py-3 rounded-lg font-medium"
-                            >
-                                Admin Login
-                            </Link>
+
                         </div>
                     </motion.div>
                 )}

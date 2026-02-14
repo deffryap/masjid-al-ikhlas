@@ -61,13 +61,12 @@ export default function Home() {
   const now = new Date();
 
   const kajianEvents = events.filter(e => e.category === 'kajian' || !e.category); // Default to kajian if null
-  const otherEvents = events.filter(e => e.category === 'kegiatan');
+  // const otherEvents = events.filter(e => e.category === 'kegiatan'); // Not using dynamic activities anymore
 
   const upcomingKajian = kajianEvents.filter(e => new Date(e.date_start) >= now);
   const pastKajian = kajianEvents.filter(e => new Date(e.date_start) < now).reverse(); // Most recent past first
 
   const displayedKajian = kajianTab === 'upcoming' ? upcomingKajian : pastKajian;
-  const upcomingActivities = otherEvents.filter(e => new Date(e.date_start) >= now).slice(0, 3);
 
   return (
     <main className="min-h-screen bg-slate-50 font-sans">
@@ -81,7 +80,6 @@ export default function Home() {
       />
 
       {/* Hero Section */}
-      {/* Hero Section */}
       <section id="home" className="relative h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image
@@ -94,42 +92,40 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-b from-emerald-950/80 via-transparent to-slate-900/90" />
         </div>
 
-        <div className="container mx-auto px-4 z-10 text-center text-white pt-20">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="max-w-4xl mx-auto"
-          >
-            <div className="inline-flex items-center px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-emerald-300 font-medium text-sm mb-8">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 mr-2 animate-pulse"></span>
-              Selamat Datang di Website Resmi
-            </div>
-            <h1 className="text-5xl md:text-7xl font-bold font-display leading-tight mb-8 drop-shadow-lg">
-              Menyemai Iman, <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-200">
-                Membangun Peradaban
-              </span>
-            </h1>
-            <p className="text-lg md:text-2xl text-slate-100 font-light max-w-2xl mx-auto leading-relaxed mb-10 drop-shadow-md">
-              Masjid Al-Ikhlas hadir sebagai pusat dakwah dan ibadah yang nyaman, modern, dan inklusif bagi seluruh umat.
-            </p>
+        <div className="container mx-auto px-4 z-10 grid md:grid-cols-12 gap-12 items-center pt-20">
+          <div className="md:col-span-7 text-white text-left space-y-8">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <div className="inline-flex items-center px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-emerald-300 font-medium text-sm mb-6">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 mr-2 animate-pulse"></span>
+                Selamat Datang di Website Resmi
+              </div>
+              <h1 className="text-5xl md:text-7xl font-bold font-display leading-tight mb-6 drop-shadow-lg">
+                Menyemai Iman, <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-200">
+                  Membangun Peradaban
+                </span>
+              </h1>
+              <p className="text-lg md:text-xl text-slate-100 font-light max-w-xl leading-relaxed mb-8 drop-shadow-md">
+                Masjid Al-Ikhlas hadir sebagai pusat dakwah dan ibadah yang nyaman, modern, dan inklusif bagi seluruh umat.
+              </p>
 
-            <div className="flex flex-wrap justify-center gap-4">
-              <button
-                onClick={() => document.getElementById('kajian')?.scrollIntoView({ behavior: 'smooth' })}
-                className="px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full font-bold transition-all shadow-lg shadow-emerald-600/30 flex items-center group text-lg"
-              >
-                Lihat Agenda Kajian
-                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </button>
-              <button
-                onClick={() => document.getElementById('kegiatan')?.scrollIntoView({ behavior: 'smooth' })}
-                className="px-8 py-4 bg-white/10 hover:bg-white/20 text-white backdrop-blur-md rounded-full font-bold transition-colors border border-white/30 text-lg"
-              >
-                Program Umat
-              </button>
-            </div>
+
+            </motion.div>
+          </div>
+
+          <motion.div
+            id="jadwal"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="md:col-span-5 relative hidden md:block"
+          >
+            <div className="absolute -inset-4 bg-emerald-500/20 blur-xl rounded-full opacity-50"></div>
+            <JadwalSholat />
           </motion.div>
         </div>
 
@@ -145,8 +141,92 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* Kajian Section */}
-      {/* Kajian Section */}
+      {/* Kegiatan Masjid Section (Moved UP) */}
+      <section id="kegiatan" className="py-24 bg-slate-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <span className="text-emerald-600 font-bold tracking-wider uppercase text-sm mb-2 block">Aktivitas Sosial & Kemasyarakatan</span>
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-800">Program & Layanan Umat</h2>
+            <div className="w-24 h-1.5 bg-emerald-500 mx-auto mt-4 rounded-full"></div>
+          </div>
+
+          <div className="grid md:grid-cols-4 gap-6">
+            {/* Card 1: TPA */}
+            <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-lg hover:-translate-y-1 transition-all group">
+              <div className="relative h-48 w-full">
+                <Image
+                  src="https://images.unsplash.com/photo-1519818187420-8e49de7fc4f2?q=80&w=800&auto=format&fit=crop"
+                  alt="TPA Al-Ikhlas"
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-bold text-slate-800 mb-2">TPA Al-Ikhlas</h3>
+                <p className="text-slate-500 text-sm leading-relaxed">
+                  Membentuk generasi Qur'ani yang berakhlak mulia melalui pendidikan Al-Qur'an sejak dini.
+                </p>
+              </div>
+            </div>
+
+            {/* Card 2: Kajian Ahad Pagi */}
+            <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-lg hover:-translate-y-1 transition-all group">
+              <div className="relative h-48 w-full">
+                <Image
+                  src="https://images.unsplash.com/photo-1542042958-37c223ebbb36?q=80&w=800&auto=format&fit=crop"
+                  alt="Kajian Ahad Pagi"
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-bold text-slate-800 mb-2">Kajian Ahad Pagi</h3>
+                <p className="text-slate-500 text-sm leading-relaxed">
+                  Siraman rohani rutin setiap pekan untuk mempererat ukhuwah dan menambah wawasan keislaman.
+                </p>
+              </div>
+            </div>
+
+            {/* Card 3: Wakaf & Infaq */}
+            <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-lg hover:-translate-y-1 transition-all group">
+              <div className="relative h-48 w-full">
+                <Image
+                  src="https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?q=80&w=800&auto=format&fit=crop"
+                  alt="Wakaf & Infaq"
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-bold text-slate-800 mb-2">Wakaf & Infaq</h3>
+                <p className="text-slate-500 text-sm leading-relaxed">
+                  Salurkan harta terbaik Anda untuk pembangunan umat dan keberkahan yang terus mengalir.
+                </p>
+              </div>
+            </div>
+
+            {/* Card 4: Tahsin Al-Qur'an */}
+            <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-lg hover:-translate-y-1 transition-all group">
+              <div className="relative h-48 w-full">
+                <Image
+                  src="https://images.unsplash.com/photo-1609599006353-e629aaabfeae?q=80&w=800&auto=format&fit=crop"
+                  alt="Tahsin Al-Qur'an"
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-bold text-slate-800 mb-2">Tahsin Al-Qur'an</h3>
+                <p className="text-slate-500 text-sm leading-relaxed">
+                  Perbaiki bacaan Al-Qur'an Anda bersanad, terbuka untuk ikhwan dan akhwat dewasa.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Kajian Section (Moved Down) */}
       <section id="kajian" className="py-24 bg-white">
         <div className="container mx-auto px-4">
           <div className="mb-12 text-center md:text-left">
@@ -239,75 +319,6 @@ export default function Home() {
         onEventClick={openModal}
       />
 
-      {/* Kegiatan Masjid Section (Updated) */}
-      <section id="kegiatan" className="py-24 bg-slate-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <span className="text-emerald-600 font-bold tracking-wider uppercase text-sm mb-2 block">Aktivitas Sosial & Kemasyarakatan</span>
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-800">Program & Layanan Umat</h2>
-            <div className="w-24 h-1.5 bg-emerald-500 mx-auto mt-4 rounded-full"></div>
-          </div>
-
-          <div className="grid md:grid-cols-4 gap-6">
-            {/* Card 1: TPA */}
-            <div className="bg-white rounded-2xl p-8 shadow-sm border border-slate-100 hover:shadow-lg hover:-translate-y-1 transition-all group">
-              <div className="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center mb-6 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
-                <BookOpen className="w-7 h-7" />
-              </div>
-              <h3 className="text-xl font-bold text-slate-800 mb-3">TPA Al-Ikhlas</h3>
-              <p className="text-slate-500 text-sm leading-relaxed mb-4">
-                Membentuk generasi Qur'ani yang berakhlak mulia melalui pendidikan Al-Qur'an sejak dini.
-              </p>
-              <a href="#" className="text-emerald-600 font-semibold text-sm flex items-center hover:underline">
-                Selengkapnya <ChevronRight className="w-4 h-4 ml-1" />
-              </a>
-            </div>
-
-            {/* Card 2: Kajian Ahad Pagi */}
-            <div className="bg-white rounded-2xl p-8 shadow-sm border border-slate-100 hover:shadow-lg hover:-translate-y-1 transition-all group">
-              <div className="w-14 h-14 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center mb-6 group-hover:bg-blue-600 group-hover:text-white transition-colors">
-                <Users className="w-7 h-7" />
-              </div>
-              <h3 className="text-xl font-bold text-slate-800 mb-3">Kajian Ahad Pagi</h3>
-              <p className="text-slate-500 text-sm leading-relaxed mb-4">
-                Siraman rohani rutin setiap pekan untuk mempererat ukhuwah dan menambah wawasan keislaman.
-              </p>
-              <a href="#" className="text-blue-600 font-semibold text-sm flex items-center hover:underline">
-                Jadwal Kajian <ChevronRight className="w-4 h-4 ml-1" />
-              </a>
-            </div>
-
-            {/* Card 3: Wakaf & Infaq */}
-            <div className="bg-white rounded-2xl p-8 shadow-sm border border-slate-100 hover:shadow-lg hover:-translate-y-1 transition-all group">
-              <div className="w-14 h-14 bg-amber-100 text-amber-600 rounded-xl flex items-center justify-center mb-6 group-hover:bg-amber-600 group-hover:text-white transition-colors">
-                <Heart className="w-7 h-7" />
-              </div>
-              <h3 className="text-xl font-bold text-slate-800 mb-3">Wakaf & Infaq</h3>
-              <p className="text-slate-500 text-sm leading-relaxed mb-4">
-                Salurkan harta terbaik Anda untuk pembangunan umat dan keberkahan yang terus mengalir.
-              </p>
-              <a href="#" className="text-amber-600 font-semibold text-sm flex items-center hover:underline">
-                Salurkan Donasi <ChevronRight className="w-4 h-4 ml-1" />
-              </a>
-            </div>
-
-            {/* Card 4: Tahsin Al-Qur'an */}
-            <div className="bg-white rounded-2xl p-8 shadow-sm border border-slate-100 hover:shadow-lg hover:-translate-y-1 transition-all group">
-              <div className="w-14 h-14 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center mb-6 group-hover:bg-purple-600 group-hover:text-white transition-colors">
-                <Star className="w-7 h-7" />
-              </div>
-              <h3 className="text-xl font-bold text-slate-800 mb-3">Tahsin Al-Qur'an</h3>
-              <p className="text-slate-500 text-sm leading-relaxed mb-4">
-                Perbaiki bacaan Al-Qur'an Anda bersanad, terbuka untuk ikhwan dan akhwat dewasa.
-              </p>
-              <a href="#" className="text-purple-600 font-semibold text-sm flex items-center hover:underline">
-                Daftar Sekarang <ChevronRight className="w-4 h-4 ml-1" />
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Gallery Section - Reused */}
       <section id="galeri" className="py-24 bg-white">
         <div className="container mx-auto px-4">
@@ -323,7 +334,6 @@ export default function Home() {
 
       {/* Footer - Reused but clean ID */}
       <footer id="footer" className="bg-slate-900 text-slate-300 py-16">
-        {/* ... Footer Content from previous step ... */}
         <div className="container mx-auto px-4 grid md:grid-cols-4 gap-12">
           <div className="col-span-1 md:col-span-1">
             <h3 className="text-2xl font-bold text-white mb-6 flex items-center">
@@ -339,8 +349,8 @@ export default function Home() {
             <h4 className="text-lg font-semibold text-white mb-6">Pintas Menu</h4>
             <ul className="space-y-3">
               <li><a href="#home" className="hover:text-emerald-400 transition-colors">Beranda</a></li>
-              <li><a href="#jadwal" className="hover:text-emerald-400 transition-colors">Jadwal Sholat</a></li>
               <li><a href="#kajian" className="hover:text-emerald-400 transition-colors">Kajian</a></li>
+              <li><a href="#kegiatan" className="hover:text-emerald-400 transition-colors">Kegiatan & Program</a></li>
               <li><a href="#galeri" className="hover:text-emerald-400 transition-colors">Galeri</a></li>
             </ul>
           </div>
@@ -357,8 +367,8 @@ export default function Home() {
 
           <div>
             <h4 className="text-lg font-semibold text-white mb-6">Hubungi Kami</h4>
-            {/* Contact details placeholder */}
             <p className="text-slate-400">Jl. Masjid No. 1, Jakarta</p>
+            <p className="text-slate-400 mt-2">info@masjid-alikhlas.com</p>
           </div>
         </div>
         <div className="container mx-auto px-4 mt-12 pt-8 border-t border-slate-800 text-center text-sm text-slate-500">
