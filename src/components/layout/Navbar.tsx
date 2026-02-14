@@ -74,8 +74,7 @@ export default function Navbar() {
                         {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
                     </button>
 
-                    {/* Mobile Menu Placeholder (Hidden on Desktop) */}
-                    <div className="hidden md:block w-8"></div>
+
                 </div>
             </motion.nav>
 

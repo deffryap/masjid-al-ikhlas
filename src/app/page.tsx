@@ -83,10 +83,40 @@ export default function Home() {
       {/* Hero Section */}
       <section id="home" className="relative min-h-[90vh] flex flex-col items-center justify-center overflow-hidden bg-[#FFF8F0]">
 
-        {/* Background Patterns - Subtle Islamic Geometry */}
-        <div className="absolute inset-0 opacity-[0.03] z-0 pointer-events-none"
+        {/* Background Patterns - Subtle Scale/Parallax on Hover */}
+        <motion.div
+          className="absolute inset-0 opacity-[0.03] z-0"
+          whileHover={{ scale: 1.1, rotate: 1 }}
+          transition={{ duration: 10, ease: "linear", repeat: Infinity, repeatType: "mirror" }}
           style={{
             backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+          }}
+        />
+
+        {/* Interactive Gradient Spot */}
+        <motion.div
+          className="absolute top-[-20%] right-[-10%] w-[500px] h-[500px] bg-emerald-400/10 blur-[100px] rounded-full pointer-events-none"
+          animate={{
+            scale: [1, 1.2, 1],
+            x: [0, 50, 0],
+            y: [0, 30, 0],
+          }}
+          transition={{
+            duration: 10,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        <motion.div
+          className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-teal-300/10 blur-[120px] rounded-full pointer-events-none"
+          animate={{
+            scale: [1.2, 1, 1.2],
+            x: [0, -40, 0],
+          }}
+          transition={{
+            duration: 15,
+            repeat: Infinity,
+            ease: "easeInOut"
           }}
         />
 
