@@ -6,6 +6,7 @@ import { ChevronRight, ArrowRight, Calendar, MapPin, BookOpen, Heart, Users, Sta
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 import JadwalSholat from '@/components/features/prayer-times/JadwalSholat';
+import PrayerTimesHero from '@/components/features/prayer-times/PrayerTimesHero';
 import EventCard from '@/components/features/events/EventCard';
 import EventModal from '@/components/features/events/EventModal';
 import KajianArchiveModal from '@/components/features/events/KajianArchiveModal';
@@ -80,65 +81,52 @@ export default function Home() {
       />
 
       {/* Hero Section */}
-      <section id="home" className="relative h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <Image
-            src="https://images.unsplash.com/photo-1542042958-37c223ebbb36?q=80&w=1920&auto=format&fit=crop"
-            alt="Mosque Architecture"
-            fill
-            className="object-cover"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-emerald-950/80 via-transparent to-slate-900/90" />
-        </div>
+      <section id="home" className="relative min-h-[90vh] flex flex-col items-center justify-center overflow-hidden bg-[#FFF8F0]">
 
-        <div className="container mx-auto px-4 z-10 grid md:grid-cols-12 gap-12 items-center pt-20">
-          <div className="md:col-span-7 text-white text-left space-y-8">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-            >
-              <div className="inline-flex items-center px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-emerald-300 font-medium text-sm mb-6">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 mr-2 animate-pulse"></span>
-                Selamat Datang di Website Resmi
-              </div>
-              <h1 className="text-5xl md:text-7xl font-bold font-display leading-tight mb-6 drop-shadow-lg">
-                Menyemai Iman, <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-200">
-                  Membangun Peradaban
-                </span>
-              </h1>
-              <p className="text-lg md:text-xl text-slate-100 font-light max-w-xl leading-relaxed mb-8 drop-shadow-md">
-                Masjid Al-Ikhlas hadir sebagai pusat dakwah dan ibadah yang nyaman, modern, dan inklusif bagi seluruh umat.
-              </p>
+        {/* Background Patterns - Subtle Islamic Geometry */}
+        <div className="absolute inset-0 opacity-[0.03] z-0 pointer-events-none"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+          }}
+        />
 
-
-            </motion.div>
-          </div>
-
+        {/* Central Content */}
+        <div className="container mx-auto px-4 z-10 text-center flex-1 flex flex-col justify-center items-center pt-28 pb-32">
           <motion.div
-            id="jadwal"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="md:col-span-5 relative hidden md:block"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
           >
-            <div className="absolute -inset-4 bg-emerald-500/20 blur-xl rounded-full opacity-50"></div>
-            <JadwalSholat />
+            <h1 className="text-5xl md:text-8xl font-bold font-display text-slate-800 mb-6 tracking-tight">
+              Masjid Al-Ikhlas
+            </h1>
+            <p className="text-xl md:text-2xl text-slate-600 font-light mb-12 max-w-2xl mx-auto">
+              Pusat Dakwah dan Ibadah yang Nyaman, Modern, dan Inklusif.
+            </p>
+
+            {/* Central Mosque Image Illustration */}
+            <div className="relative w-full max-w-4xl mx-auto h-[300px] md:h-[400px] mb-[-120px] md:mb-[-150px] z-0">
+              <Image
+                src="https://images.unsplash.com/photo-1564769625906-e7ddb5695574?q=80&w=1200&auto=format&fit=crop" // Replacing with a clean mosque image, ideally distinct from background
+                alt="Masjid Illustration"
+                fill
+                className="object-contain object-bottom drop-shadow-2xl"
+              />
+              <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#FFF8F0] to-transparent" />
+            </div>
           </motion.div>
         </div>
 
-        {/* Scroll Indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 1 }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/50 flex flex-col items-center animate-bounce"
-        >
-          <span className="text-xs tracking-widest uppercase mb-2">Scroll</span>
-          <div className="w-[1px] h-8 bg-gradient-to-b from-white/0 via-white/50 to-white/0"></div>
-        </motion.div>
+        {/* Floating Card Section */}
+        <div className="container mx-auto px-4 z-20 relative -mt-16 mb-12">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+          >
+            <PrayerTimesHero />
+          </motion.div>
+        </div>
       </section>
 
       {/* Kegiatan Masjid Section (Moved UP) */}
