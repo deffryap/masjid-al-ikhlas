@@ -3,11 +3,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 
-const GRID_SIZE = 30; // Size of each cell in pixels
-const LINE_LENGTH = 15; // Length of the 'filing' line
+const GRID_SIZE = 40; // Increased spacing slightly
+const LINE_LENGTH = 15;
 
 export default function MagneticBackground() {
-    // We need to track window size to spawn enough grid items
     const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -19,19 +18,25 @@ export default function MagneticBackground() {
     const smoothMouseY = useSpring(mouseY, { stiffness: 150, damping: 20 });
 
     useEffect(() => {
-        // Handle Resize
-        const handleResize = () => {
+        const updateDimensions = () => {
             if (containerRef.current) {
                 setDimensions({
-                    width: containerRef.current.offsetWidth,
-                    height: containerRef.current.offsetHeight
+                    width: containerRef.current.clientWidth,
+                    height: containerRef.current.clientHeight // Use clientHeight/Width
                 });
             }
         };
 
-        handleResize();
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
+        updateDimensions();
+        window.addEventListener('resize', updateDimensions);
+
+        // Timeout to ensure layout is settled
+        const timer = setTimeout(updateDimensions, 100);
+
+        return () => {
+            window.removeEventListener('resize', updateDimensions);
+            clearTimeout(timer);
+        };
     }, []);
 
     const handleMouseMove = (e: React.MouseEvent) => {
@@ -41,12 +46,9 @@ export default function MagneticBackground() {
         mouseY.set(e.clientY - rect.top);
     };
 
-    // Calculate columns and rows
-    const cols = Math.floor(dimensions.width / GRID_SIZE);
-    const rows = Math.floor(dimensions.height / GRID_SIZE);
+    const cols = Math.floor(dimensions.width / GRID_SIZE) || 0;
+    const rows = Math.floor(dimensions.height / GRID_SIZE) || 0;
     const totalItems = cols * rows;
-
-    if (dimensions.width === 0) return null;
 
     return (
         <div
@@ -54,36 +56,36 @@ export default function MagneticBackground() {
             className="absolute inset-0 overflow-hidden z-0"
             onMouseMove={handleMouseMove}
         >
-            <div
-                className="absolute inset-0 grid"
-                style={{
-                    gridTemplateColumns: `repeat(${cols}, ${GRID_SIZE}px)`,
-                    gridTemplateRows: `repeat(${rows}, ${GRID_SIZE}px)`,
-                }}
-            >
-                {Array.from({ length: totalItems }).map((_, i) => {
-                    // Calculate center position of this cell relative to container
-                    const col = i % cols;
-                    const row = Math.floor(i / cols);
-                    const centerX = col * GRID_SIZE + GRID_SIZE / 2;
-                    const centerY = row * GRID_SIZE + GRID_SIZE / 2;
+            {totalItems > 0 && (
+                <div
+                    className="absolute inset-0 grid place-items-center pointer-events-none"
+                    style={{
+                        gridTemplateColumns: `repeat(${cols}, 1fr)`,
+                        gridTemplateRows: `repeat(${rows}, 1fr)`,
+                    }}
+                >
+                    {Array.from({ length: totalItems }).map((_, i) => {
+                        const col = i % cols;
+                        const row = Math.floor(i / cols);
+                        const centerX = col * GRID_SIZE + GRID_SIZE / 2;
+                        const centerY = row * GRID_SIZE + GRID_SIZE / 2;
 
-                    return (
-                        <MagneticFiling
-                            key={i}
-                            centerX={centerX}
-                            centerY={centerY}
-                            mouseX={smoothMouseX}
-                            mouseY={smoothMouseY}
-                        />
-                    );
-                })}
-            </div>
+                        return (
+                            <MagneticFiling
+                                key={i}
+                                centerX={centerX}
+                                centerY={centerY}
+                                mouseX={smoothMouseX}
+                                mouseY={smoothMouseY}
+                            />
+                        );
+                    })}
+                </div>
+            )}
         </div>
     );
 }
 
-// Individual Filing Component
 function MagneticFiling({ centerX, centerY, mouseX, mouseY }: { centerX: number, centerY: number, mouseX: any, mouseY: any }) {
 
     // Calculate angle to mouse
@@ -94,21 +96,28 @@ function MagneticFiling({ centerX, centerY, mouseX, mouseY }: { centerX: number,
         return `${angle}rad`;
     });
 
-    // Optional: Calculate distance to scale opacity (fades out if too far)
-    const opacity = useTransform([mouseX, mouseY], ([mx, my]: number[]) => {
+    // Distance based opacity/scale
+    const style = useTransform([mouseX, mouseY], ([mx, my]: number[]) => {
         const dx = mx - centerX;
         const dy = my - centerY;
         const dist = Math.sqrt(dx * dx + dy * dy);
-        // Only active within 600px radius
-        const maxDist = 600;
-        return Math.max(0.1, 1 - dist / maxDist);
+
+        // Interact radius
+        const maxDist = 800;
+        const intensity = Math.max(0, 1 - dist / maxDist);
+
+        return {
+            opacity: 0.3 + (intensity * 0.7), // Minimum opacity 0.3 so it's always barely visible
+            scale: 1 + (intensity * 0.5),
+            width: 15 + (intensity * 10), // Grow slightly when active
+        };
     });
 
     return (
         <div className="w-full h-full flex items-center justify-center">
             <motion.div
-                style={{ rotate, opacity }}
-                className="w-4 h-[2px] bg-slate-300 rounded-full origin-center"
+                style={{ rotate, ...style }}
+                className="h-[3px] bg-slate-400 rounded-full origin-center" // Darker, thicker
             />
         </div>
     );
