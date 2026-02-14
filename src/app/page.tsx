@@ -7,6 +7,7 @@ import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 import JadwalSholat from '@/components/features/prayer-times/JadwalSholat';
 import PrayerTimesHero from '@/components/features/prayer-times/PrayerTimesHero';
+import MagneticBackground from '@/components/ui/MagneticBackground';
 import EventCard from '@/components/features/events/EventCard';
 import EventModal from '@/components/features/events/EventModal';
 import KajianArchiveModal from '@/components/features/events/KajianArchiveModal';
@@ -24,10 +25,6 @@ export default function Home() {
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isArchiveModalOpen, setIsArchiveModalOpen] = useState(false);
-
-  // Mouse Movement for Hero
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
 
   // Tab State for Kajian
   const [kajianTab, setKajianTab] = useState<'upcoming' | 'past'>('upcoming');
@@ -85,59 +82,21 @@ export default function Home() {
       />
 
       {/* Hero Section */}
-      <section
-        id="home"
-        className="relative min-h-[90vh] flex flex-col items-center justify-center overflow-hidden bg-[#FFF8F0] group/hero"
-        onMouseMove={({ currentTarget, clientX, clientY }) => {
-          const { left, top } = currentTarget.getBoundingClientRect();
-          mouseX.set(clientX - left);
-          mouseY.set(clientY - top);
-        }}
-      >
+      <section id="home" className="relative min-h-[90vh] flex flex-col items-center justify-center overflow-hidden bg-[#FFF8F0]">
 
-        {/* Spotlight Effect */}
-        <motion.div
-          className="pointer-events-none absolute -inset-px opacity-0 group-hover/hero:opacity-100 transition duration-300 z-0"
-          style={{
-            background: useMotionTemplate`
-              radial-gradient(
-                650px circle at ${mouseX}px ${mouseY}px,
-                rgba(16, 185, 129, 0.1),
-                transparent 80%
-              )
-            `,
-          }}
-        />
-
-        {/* Background Patterns */}
-        <div className="absolute inset-0 opacity-[0.03] z-0 pointer-events-none"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
-          }}
-        />
+        {/* Magnetic Background Effect */}
+        <MagneticBackground />
 
         {/* Central Content */}
-        <div className="container mx-auto px-4 z-10 text-center flex-1 flex flex-col justify-center items-center pt-28 pb-32">
+        <div className="container mx-auto px-4 z-10 text-center flex-1 flex flex-col justify-center items-center pt-28 pb-32 pointer-events-none">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
+            className="pointer-events-auto"
           >
             <h1 className="text-5xl md:text-8xl font-bold font-display text-slate-800 mb-6 tracking-tight relative">
               <span className="relative z-10">Masjid Al-Ikhlas</span>
-              {/* Text Glow Effect */}
-              <motion.span
-                className="absolute inset-0 blur-2xl z-0 opacity-50"
-                style={{
-                  background: useMotionTemplate`
-                          radial-gradient(
-                            200px circle at ${mouseX}px ${mouseY}px,
-                            rgba(52, 211, 153, 0.4),
-                            transparent 80%
-                          )
-                        `,
-                }}
-                aria-hidden="true">Masjid Al-Ikhlas</motion.span>
             </h1>
             <p className="text-xl md:text-2xl text-slate-600 font-light mb-12 max-w-2xl mx-auto">
               Pusat Dakwah dan Ibadah yang Nyaman, Modern, dan Inklusif.
@@ -146,7 +105,7 @@ export default function Home() {
             {/* Central Mosque Image Illustration */}
             <div className="relative w-full max-w-4xl mx-auto h-[300px] md:h-[400px] mb-[-120px] md:mb-[-150px] z-0">
               <Image
-                src="https://images.unsplash.com/photo-1564769625906-e7ddb5695574?q=80&w=1200&auto=format&fit=crop" // Replacing with a clean mosque image, ideally distinct from background
+                src="https://images.unsplash.com/photo-1564769625906-e7ddb5695574?q=80&w=1200&auto=format&fit=crop"
                 alt="Masjid Illustration"
                 fill
                 className="object-contain object-bottom drop-shadow-2xl"
@@ -157,11 +116,12 @@ export default function Home() {
         </div>
 
         {/* Floating Card Section */}
-        <div className="container mx-auto px-4 z-20 relative -mt-16 mb-12">
+        <div className="container mx-auto px-4 z-20 relative -mt-16 mb-12 pointer-events-none">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
+            className="pointer-events-auto"
           >
             <PrayerTimesHero />
           </motion.div>
