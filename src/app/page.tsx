@@ -10,10 +10,13 @@ import Navbar from '@/components/layout/Navbar';
 import { supabase } from '@/lib/supabase';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
+import EventModal from '@/components/features/events/EventModal';
 
 export default function Home() {
   const [events, setEvents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedEvent, setSelectedEvent] = useState<any>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     async function fetchEvents() {
@@ -43,6 +46,11 @@ export default function Home() {
   const featuredEvent = upcomingEvents[0];
   const otherUpcomingEvents = upcomingEvents.slice(1, 4);
   const displayListEvents = [...otherUpcomingEvents, ...pastEvents].slice(0, 4);
+
+  const handleEventClick = (event: any) => {
+    setSelectedEvent(event);
+    setIsModalOpen(true);
+  };
 
   return (
     <main className="min-h-screen bg-background-light dark:bg-background-dark font-sans selection:bg-primary/30">
@@ -161,7 +169,7 @@ export default function Home() {
 
           <div className="grid lg:grid-cols-3 gap-8 min-h-[500px]">
             {/* Featured Event (2 cols) */}
-            <div className="lg:col-span-2 relative rounded-2xl overflow-hidden group h-full min-h-[400px]">
+            <div className="lg:col-span-2 relative rounded-2xl overflow-hidden group h-full min-h-[400px] cursor-pointer" onClick={() => featuredEvent && handleEventClick(featuredEvent)}>
               {featuredEvent ? (
                 <>
                   <Image
@@ -209,13 +217,17 @@ export default function Home() {
             <div className="bg-white dark:bg-surface-dark border border-slate-100 dark:border-slate-800 rounded-2xl p-6 h-full flex flex-col">
               <h4 className="text-lg font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
                 <Clock className="w-5 h-5 text-accent-gold" />
-                Archives & Upcoming
+                Archives
               </h4>
               <div className="overflow-y-auto pr-2 space-y-4 flex-1">
                 {displayListEvents.map((event, i) => {
                   const isUpcoming = new Date(event.date_start) >= now;
                   return (
-                    <div key={i} className="flex gap-4 p-3 rounded-lg hover:bg-background-light dark:hover:bg-white/5 transition-colors cursor-pointer border-l-2 border-transparent hover:border-primary group">
+                    <div
+                      key={i}
+                      onClick={() => handleEventClick(event)}
+                      className="flex gap-4 p-3 rounded-lg hover:bg-background-light dark:hover:bg-white/5 transition-colors cursor-pointer border-l-2 border-transparent hover:border-primary group"
+                    >
                       <div className={cn(
                         "flex-shrink-0 text-center rounded-lg p-2 w-14 h-14 flex flex-col items-center justify-center",
                         isUpcoming ? "bg-slate-100 dark:bg-slate-800" : "bg-slate-100 dark:bg-slate-800 opacity-70"
@@ -275,6 +287,59 @@ export default function Home() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Location Section */}
+      <section id="location" className="py-20 relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="space-y-6">
+              <span className="text-primary font-medium tracking-wider uppercase text-sm">Location</span>
+              <h2 className="text-3xl font-bold text-slate-900 dark:text-white">Visit Our Mosque</h2>
+              <p className="text-slate-600 dark:text-slate-300 text-lg leading-relaxed">
+                We are conveniently located in the heart of South Jakarta. Our facilities are open daily for prayers and community activities.
+              </p>
+
+              <div className="space-y-4 pt-4">
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary flex-shrink-0">
+                    <MapPin className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-slate-900 dark:text-white">Address</h4>
+                    <p className="text-slate-600 dark:text-slate-400">Jl. Merpati Indah No. 45<br />Jakarta Selatan, 12345</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary flex-shrink-0">
+                    <Clock className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-slate-900 dark:text-white">Opening Hours</h4>
+                    <p className="text-slate-600 dark:text-slate-400">Daily: 04:00 AM - 22:00 PM</p>
+                  </div>
+                </div>
+              </div>
+
+              <button className="mt-6 px-6 py-3 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition-colors">
+                Get Directions
+              </button>
+            </div>
+
+            <div className="h-[400px] rounded-2xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-800">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.059438069637!2d106.78123431476906!3d-6.255902995471903!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f10f81e82a3f%3A0x4a4a4a4a4a4a4a4a!2sJakarta!5e0!3m2!1sen!2sid!4v1625641234567!5m2!1sen!2sid"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              ></iframe>
+            </div>
           </div>
         </div>
       </section>
@@ -352,6 +417,13 @@ export default function Home() {
           </div>
         </div>
       </footer>
+
+      {/* Modal */}
+      <EventModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        event={selectedEvent}
+      />
     </main>
   );
 }

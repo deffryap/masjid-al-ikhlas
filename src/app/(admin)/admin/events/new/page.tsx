@@ -200,7 +200,7 @@ export default function NewEventPage() {
                         <div className="space-y-6">
                             <div>
                                 <label className="block text-sm font-medium text-slate-800 mb-1">Poster Utama</label>
-                                <div className="border-2 border-dashed border-slate-300 rounded-lg p-6 text-center hover:bg-slate-50 transition-colors">
+                                <div className="relative border-2 border-dashed border-slate-300 rounded-lg p-6 text-center hover:bg-slate-50 transition-colors">
                                     {formData.image_url ? (
                                         <div className="relative aspect-video w-full rounded-lg overflow-hidden mb-2">
                                             <img src={formData.image_url} alt="Preview" className="object-cover w-full h-full" />
