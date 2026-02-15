@@ -3,6 +3,15 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* Brand Colors */
+  --primary: #19e6a2;
+  --primary-dark: #12aa76;
+  --accent-gold: #C6A87C;
+  --background-light: #f6f8f7;
+  --background-dark: #11211c;
+  --surface-light: #ffffff;
+  --surface-dark: #1a2f28;
 }
 
 @theme inline {
@@ -10,6 +19,15 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* Theme Colors */
+  --color-primary: var(--primary);
+  --color-primary-dark: var(--primary-dark);
+  --color-accent-gold: var(--accent-gold);
+  --color-background-light: var(--background-light);
+  --color-background-dark: var(--background-dark);
+  --color-surface-light: var(--surface-light);
+  --color-surface-dark: var(--surface-dark);
 }
 
 @media (prefers-color-scheme: dark) {

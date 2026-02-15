@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { Coordinates, CalculationMethod, PrayerTimes } from 'adhan';
+import { Coordinates, CalculationMethod, PrayerTimes, Prayer } from 'adhan';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
-import { MapPin } from 'lucide-react';
+import { MapPin, Moon, Sun, Sunrise, Sunset, CloudMoon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 // Default Coordinates (Jakarta, Istiqlal)
@@ -21,9 +21,17 @@ const PRAYER_NAMES = {
     isha: 'Isya',
 };
 
+const PRAYER_ICONS = {
+    fajr: CloudMoon,
+    dhuhr: Sun,
+    asr: Sun, // Afternoon sun
+    maghrib: Sunset,
+    isha: Moon,
+};
+
 export default function PrayerTimesHero() {
     const [prayerTimes, setPrayerTimes] = useState<PrayerTimes | null>(null);
-    const [nextPrayer, setNextPrayer] = useState<{ name: string; time: Date } | null>(null);
+    const [nextPrayer, setNextPrayer] = useState<{ name: string; time: Date; key: string } | null>(null);
     const [currentTime, setCurrentTime] = useState(new Date());
 
     useEffect(() => {
@@ -39,73 +47,111 @@ export default function PrayerTimesHero() {
 
         setPrayerTimes(pt);
 
-        const now = new Date();
-        let next = pt.nextPrayer();
+        const next = pt.nextPrayer();
 
-        if (next === 'none') {
+        if (next === Prayer.None) {
             const tomorrow = new Date();
             tomorrow.setDate(tomorrow.getDate() + 1);
             const ptTomorrow = new PrayerTimes(coords, tomorrow, params);
-            setNextPrayer({ name: PRAYER_NAMES.fajr, time: ptTomorrow.fajr });
+            setNextPrayer({ name: PRAYER_NAMES.fajr, time: ptTomorrow.fajr, key: 'fajr' });
         } else {
             // @ts-ignore
-            const time = pt[next];
-            // @ts-ignore
-            setNextPrayer({ name: PRAYER_NAMES[next] || next, time });
+            setNextPrayer({ name: PRAYER_NAMES[next] || next, time: pt[next], key: next });
         }
     }, [currentTime]);
 
     if (!prayerTimes) return null;
 
     return (
-        <div className="bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-emerald-100 p-6 md:p-8 w-full max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12">
-            {/* Left: Location & Date */}
-            <div className="flex flex-col items-center md:items-start text-center md:text-left min-w-[200px]">
-                <div className="flex items-center text-slate-500 font-medium mb-2">
-                    <MapPin className="w-5 h-5 mr-2 text-emerald-600" />
-                    <span>Jakarta Pusat, DKI Jakarta</span>
-                </div>
-                <h3 className="text-2xl font-bold text-slate-800 mb-1">
-                    {format(currentTime, 'EEEE, d MMMM yyyy', { locale: id })}
-                </h3>
-                {nextPrayer && (
-                    <div className="text-emerald-600 text-sm font-medium">
-                        Menuju {nextPrayer.name} pukul {format(nextPrayer.time, 'HH:mm')}
-                    </div>
-                )}
-            </div>
+        <div className="relative">
+            {/* Decorative blobs */}
+            <div className="absolute -top-10 -right-10 w-64 h-64 bg-primary/20 rounded-full blur-3xl -z-10"></div>
+            <div className="absolute -bottom-10 -left-10 w-64 h-64 bg-accent-gold/20 rounded-full blur-3xl -z-10"></div>
 
-            {/* Right: Prayer Times Horizontal List */}
-            <div className="flex-1 w-full overflow-x-auto">
-                <div className="flex justify-between items-center min-w-[500px] gap-2">
+            <div className="bg-surface-light/70 dark:bg-surface-dark/70 backdrop-blur-xl rounded-2xl p-6 shadow-2xl relative overflow-hidden border border-white/20 dark:border-slate-700">
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-accent-gold to-primary"></div>
+
+                {/* Header */}
+                <div className="flex justify-between items-start mb-8">
+                    <div>
+                        <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Prayer Times</h3>
+                        <p className="text-sm text-slate-500 dark:text-slate-400 flex items-center gap-1 mt-1">
+                            <MapPin className="w-4 h-4 text-primary" />
+                            Jakarta, Indonesia
+                        </p>
+                    </div>
+                    <div className="text-right">
+                        <div className="text-2xl font-bold text-primary font-display">
+                            {format(currentTime, 'HH:mm')}
+                        </div>
+                        <div className="text-xs font-medium text-accent-gold uppercase tracking-wider mt-1">
+                            Next: {nextPrayer?.name}
+                        </div>
+                    </div>
+                </div>
+
+                {/* Calendar Strip */}
+                <div className="bg-background-light dark:bg-surface-dark/50 rounded-lg p-4 mb-6 flex justify-between items-center border border-slate-100 dark:border-slate-700 shadow-sm">
+                    <div className="text-center">
+                        <div className="text-[10px] text-slate-500 uppercase font-bold tracking-wider">Masehi</div>
+                        <div className="font-semibold text-slate-800 dark:text-slate-200 text-sm">
+                            {format(currentTime, 'd MMM yyyy')}
+                        </div>
+                    </div>
+                    <div className="h-8 w-px bg-slate-200 dark:bg-slate-600"></div>
+                    <div className="text-center">
+                        <div className="text-[10px] text-accent-gold uppercase font-bold tracking-wider">Hijriah</div>
+                        <div className="font-semibold text-slate-800 dark:text-slate-200 text-sm">
+                            {/* Placeholder for Hijri Date, ideal to use a lib or API */}
+                            Wait...
+                        </div>
+                    </div>
+                </div>
+
+                {/* Prayer List */}
+                <div className="space-y-3">
                     {Object.entries(PRAYER_NAMES).map(([key, label]) => {
                         // @ts-ignore
                         const time = prayerTimes[key];
+                        const isNext = nextPrayer?.key === key;
                         // @ts-ignore
-                        const isNext = nextPrayer?.name === label;
+                        const Icon = PRAYER_ICONS[key] || Sun;
 
                         return (
                             <div
                                 key={key}
                                 className={cn(
-                                    "flex flex-col items-center justify-center py-3 px-6 rounded-xl transition-all min-w-[100px]",
+                                    "flex justify-between items-center p-3 rounded-lg transition-colors border",
                                     isNext
-                                        ? "bg-emerald-50 border border-emerald-200 shadow-sm"
-                                        : "hover:bg-slate-50"
+                                        ? "bg-primary/10 border-primary/20 shadow-sm"
+                                        : "hover:bg-slate-50 dark:hover:bg-white/5 border-transparent cursor-default"
                                 )}
                             >
-                                <span className={cn(
-                                    "text-xs uppercase tracking-wider font-semibold mb-1",
-                                    isNext ? "text-emerald-600" : "text-slate-400"
-                                )}>
-                                    {label}
-                                </span>
-                                <span className={cn(
-                                    "text-xl font-bold font-mono",
-                                    isNext ? "text-emerald-800" : "text-slate-700"
-                                )}>
-                                    {format(time, 'HH:mm')}
-                                </span>
+                                <div className="flex items-center gap-3">
+                                    <Icon className={cn(
+                                        "w-5 h-5",
+                                        isNext ? "text-primary" : "text-slate-400"
+                                    )} />
+                                    <span className={cn(
+                                        "font-medium",
+                                        isNext ? "text-primary-dark dark:text-primary" : "text-slate-700 dark:text-slate-300"
+                                    )}>
+                                        {label}
+                                    </span>
+                                </div>
+
+                                {isNext ? (
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-[10px] bg-primary text-white px-2 py-0.5 rounded-full font-bold">NEXT</span>
+                                        <span className="font-bold text-primary-dark dark:text-primary">
+                                            {format(time, 'HH:mm')}
+                                        </span>
+                                    </div>
+                                ) : (
+                                    <span className="font-semibold text-slate-900 dark:text-white">
+                                        {format(time, 'HH:mm')}
+                                    </span>
+                                )}
                             </div>
                         );
                     })}
