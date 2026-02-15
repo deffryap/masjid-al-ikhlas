@@ -8,13 +8,13 @@
   --primary: #19e6a2;
   --primary-dark: #12aa76;
   --accent-gold: #C6A87C;
-  --background-light: #f8fafc;
-  /* Slate-50 */
-  --background-dark: #020617;
-  /* Slate-950 */
+  --background-light: #ffffff;
+  /* Pure White */
+  --background-dark: #0a0a0a;
+  /* Neutral Black */
   --surface-light: #ffffff;
-  --surface-dark: #0f172a;
-  /* Slate-900 */
+  --surface-dark: #171717;
+  /* Neutral Linear Grey */
 }
 
 @theme inline {

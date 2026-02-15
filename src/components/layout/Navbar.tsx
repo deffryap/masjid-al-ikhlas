@@ -35,7 +35,7 @@ export default function Navbar() {
                 className="fixed top-6 left-0 right-0 z-50 flex justify-center px-4"
             >
                 <div className={cn(
-                    "flex items-center justify-between px-6 py-3 rounded-full transition-all duration-300",
+                    "flex items-center justify-between px-8 py-4 rounded-full w-full max-w-5xl transition-all duration-300",
                     scrolled || mobileMenuOpen
                         ? "bg-white/90 backdrop-blur-md shadow-lg border border-slate-200/50"
                         : "bg-white/80 backdrop-blur-sm shadow-md border border-transparent"
