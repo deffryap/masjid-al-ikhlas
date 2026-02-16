@@ -68,14 +68,14 @@ export default function PrayerTimesHero() {
             <div className="absolute -top-10 -right-10 w-64 h-64 bg-primary/20 rounded-full blur-3xl -z-10"></div>
             <div className="absolute -bottom-10 -left-10 w-64 h-64 bg-accent-gold/20 rounded-full blur-3xl -z-10"></div>
 
-            <div className="bg-surface-light/70 dark:bg-surface-dark/70 backdrop-blur-xl rounded-2xl p-6 shadow-2xl relative overflow-hidden border border-white/20 dark:border-slate-700">
+            <div className="bg-white/70 backdrop-blur-xl rounded-2xl p-6 shadow-2xl relative overflow-hidden border border-slate-200">
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-accent-gold to-primary"></div>
 
                 {/* Header */}
                 <div className="flex justify-between items-start mb-8">
                     <div>
-                        <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Prayer Times</h3>
-                        <p className="text-sm text-slate-500 dark:text-slate-400 flex items-center gap-1 mt-1">
+                        <h3 className="text-lg font-semibold text-slate-900">Prayer Times</h3>
+                        <p className="text-sm text-slate-500 flex items-center gap-1 mt-1">
                             <MapPin className="w-4 h-4 text-primary" />
                             Jakarta, Indonesia
                         </p>
@@ -91,17 +91,17 @@ export default function PrayerTimesHero() {
                 </div>
 
                 {/* Calendar Strip */}
-                <div className="bg-background-light dark:bg-surface-dark/50 rounded-lg p-4 mb-6 flex justify-between items-center border border-slate-100 dark:border-slate-700 shadow-sm">
+                <div className="bg-slate-50 rounded-lg p-4 mb-6 flex justify-between items-center border border-slate-100 shadow-sm">
                     <div className="text-center">
                         <div className="text-[10px] text-slate-500 uppercase font-bold tracking-wider">Masehi</div>
-                        <div className="font-semibold text-slate-800 dark:text-slate-200 text-sm">
+                        <div className="font-semibold text-slate-800 text-sm">
                             {format(currentTime, 'd MMM yyyy')}
                         </div>
                     </div>
-                    <div className="h-8 w-px bg-slate-200 dark:bg-slate-600"></div>
+                    <div className="h-8 w-px bg-slate-200"></div>
                     <div className="text-center">
                         <div className="text-[10px] text-accent-gold uppercase font-bold tracking-wider">Hijriah</div>
-                        <div className="font-semibold text-slate-800 dark:text-slate-200 text-sm">
+                        <div className="font-semibold text-slate-800 text-sm">
                             {/* Placeholder for Hijri Date, ideal to use a lib or API */}
                             Wait...
                         </div>
@@ -124,7 +124,7 @@ export default function PrayerTimesHero() {
                                     "flex justify-between items-center p-3 rounded-lg transition-colors border",
                                     isNext
                                         ? "bg-primary/10 border-primary/20 shadow-sm"
-                                        : "hover:bg-slate-50 dark:hover:bg-white/5 border-transparent cursor-default"
+                                        : "hover:bg-slate-50 border-transparent cursor-default"
                                 )}
                             >
                                 <div className="flex items-center gap-3">
@@ -134,7 +134,7 @@ export default function PrayerTimesHero() {
                                     )} />
                                     <span className={cn(
                                         "font-medium",
-                                        isNext ? "text-primary-dark dark:text-primary" : "text-slate-700 dark:text-slate-300"
+                                        isNext ? "text-primary-dark" : "text-slate-700"
                                     )}>
                                         {label}
                                     </span>
@@ -143,12 +143,12 @@ export default function PrayerTimesHero() {
                                 {isNext ? (
                                     <div className="flex items-center gap-2">
                                         <span className="text-[10px] bg-primary text-white px-2 py-0.5 rounded-full font-bold">NEXT</span>
-                                        <span className="font-bold text-primary-dark dark:text-primary">
+                                        <span className="font-bold text-primary-dark">
                                             {format(time, 'HH:mm')}
                                         </span>
                                     </div>
                                 ) : (
-                                    <span className="font-semibold text-slate-900 dark:text-white">
+                                    <span className="font-semibold text-slate-900">
                                         {format(time, 'HH:mm')}
                                     </span>
                                 )}

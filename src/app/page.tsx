@@ -53,13 +53,13 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-background-light dark:bg-background-dark font-sans selection:bg-primary/30">
+    <main className="min-h-screen bg-white font-sans selection:bg-primary/30">
       <Navbar />
 
       {/* Hero Section */}
       <section id="home" className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
         {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05] z-0 pointer-events-none"
+        <div className="absolute inset-0 opacity-[0.03] z-0 pointer-events-none"
           style={{
             backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2319e6a2' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
           }}
@@ -75,11 +75,11 @@ export default function Home() {
               transition={{ duration: 0.8 }}
               className="space-y-8"
             >
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary-dark dark:text-primary text-sm font-medium border border-primary/20">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary-dark text-sm font-medium border border-primary/20">
                 <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
                 <span>Welcome to Masjid Al Ikhlas</span>
               </div>
-              <h1 className="text-5xl lg:text-6xl font-bold leading-tight text-slate-900 dark:text-white">
+              <h1 className="text-5xl lg:text-6xl font-bold leading-tight text-slate-900">
                 A Sanctuary of <br />
                 <span className="text-primary relative inline-block">
                   Peace
@@ -89,14 +89,14 @@ export default function Home() {
                 </span>
                 and Worship
               </h1>
-              <p className="text-lg text-slate-600 dark:text-slate-300 max-w-lg leading-relaxed">
+              <p className="text-lg text-slate-600 max-w-lg leading-relaxed">
                 Join our community in prayer, learning, and spiritual growth. We are dedicated to serving the needs of the Ummah with modern facilities and traditional values.
               </p>
               <div className="flex flex-wrap gap-4">
-                <button className="px-8 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-lg font-medium hover:bg-slate-800 dark:hover:bg-slate-100 transition-colors shadow-lg shadow-slate-900/20">
+                <button className="px-8 py-3 bg-slate-900 text-white rounded-lg font-medium hover:bg-slate-800 transition-colors shadow-lg shadow-slate-900/20">
                   Visit Us
                 </button>
-                <button className="px-8 py-3 bg-white dark:bg-surface-dark border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-lg font-medium hover:border-primary hover:text-primary transition-colors flex items-center gap-2">
+                <button className="px-8 py-3 bg-white border border-slate-200 text-slate-700 rounded-lg font-medium hover:border-primary hover:text-primary transition-colors flex items-center gap-2">
                   <Play className="w-4 h-4 fill-current" />
                   Watch Live
                 </button>
@@ -116,11 +116,11 @@ export default function Home() {
       </section>
 
       {/* Activities Section */}
-      <section id="activities" className="py-20 bg-surface-light dark:bg-surface-dark/30">
+      <section id="activities" className="py-20 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <span className="text-primary font-medium tracking-wider uppercase text-sm">Our Programs</span>
-            <h2 className="text-3xl font-bold mt-2 text-slate-900 dark:text-white">Community Activities</h2>
+            <h2 className="text-3xl font-bold mt-2 text-slate-900">Community Activities</h2>
             <div className="w-16 h-1 bg-primary mx-auto mt-4 rounded-full"></div>
           </div>
 
@@ -131,15 +131,15 @@ export default function Home() {
               { title: 'Wakaf & Infaq', icon: Heart, desc: 'Facilitating charitable giving for mosque maintenance and social welfare programs.', link: 'Donate now' },
               { title: 'Tahsin Class', icon: Mic2, desc: 'Adult classes dedicated to correcting and improving Quranic recitation.', link: 'Join class' },
             ].map((item, index) => (
-              <div key={index} className="group bg-background-light dark:bg-surface-dark p-8 rounded-xl border border-transparent hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 relative overflow-hidden">
+              <div key={index} className="group bg-white p-8 rounded-xl border border-transparent hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 relative overflow-hidden">
                 <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
                   <item.icon className="w-24 h-24 text-primary transform rotate-12" />
                 </div>
-                <div className="w-14 h-14 bg-white dark:bg-slate-800 rounded-lg shadow-sm flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                <div className="w-14 h-14 bg-slate-50 rounded-lg shadow-sm flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                   <item.icon className="w-6 h-6 text-primary" />
                 </div>
-                <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">{item.title}</h3>
-                <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-4">
+                <h3 className="text-xl font-bold text-slate-900 mb-2">{item.title}</h3>
+                <p className="text-slate-500 text-sm leading-relaxed mb-4">
                   {item.desc}
                 </p>
                 <a href="#" className="inline-flex items-center text-primary text-sm font-medium hover:text-primary-dark transition-colors">
@@ -154,13 +154,13 @@ export default function Home() {
       {/* Events Section */}
       <section id="events" className="py-20 relative overflow-hidden">
         {/* Subtle background detail */}
-        <div className="absolute top-1/2 left-0 w-full h-1/2 bg-surface-light dark:bg-surface-dark/20 skew-y-2 -z-10"></div>
+        <div className="absolute top-1/2 left-0 w-full h-1/2 bg-white skew-y-2 -z-10"></div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-end mb-12">
             <div>
               <span className="text-accent-gold font-medium tracking-wider uppercase text-sm">Calendar</span>
-              <h2 className="text-3xl font-bold mt-2 text-slate-900 dark:text-white">Upcoming Events</h2>
+              <h2 className="text-3xl font-bold mt-2 text-slate-900">Upcoming Events</h2>
             </div>
             <a href="#" className="hidden md:flex items-center text-slate-500 hover:text-primary transition-colors text-sm font-medium">
               View all events <ArrowRight className="w-4 h-4 ml-1" />
@@ -207,15 +207,15 @@ export default function Home() {
                   </div>
                 </>
               ) : (
-                <div className="w-full h-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-slate-400">
+                <div className="w-full h-full bg-slate-200 flex items-center justify-center text-slate-400">
                   No upcoming featured events
                 </div>
               )}
             </div>
 
             {/* Events List (1 col) */}
-            <div className="bg-white dark:bg-surface-dark border border-slate-100 dark:border-slate-800 rounded-2xl p-6 h-full flex flex-col">
-              <h4 className="text-lg font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+            <div className="bg-white border border-slate-100 rounded-2xl p-6 h-full flex flex-col">
+              <h4 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
                 <Clock className="w-5 h-5 text-accent-gold" />
                 Archives
               </h4>
@@ -226,11 +226,11 @@ export default function Home() {
                     <div
                       key={i}
                       onClick={() => handleEventClick(event)}
-                      className="flex gap-4 p-3 rounded-lg hover:bg-background-light dark:hover:bg-white/5 transition-colors cursor-pointer border-l-2 border-transparent hover:border-primary group"
+                      className="flex gap-4 p-3 rounded-lg hover:bg-slate-50 transition-colors cursor-pointer border-l-2 border-transparent hover:border-primary group"
                     >
                       <div className={cn(
                         "flex-shrink-0 text-center rounded-lg p-2 w-14 h-14 flex flex-col items-center justify-center",
-                        isUpcoming ? "bg-slate-100 dark:bg-slate-800" : "bg-slate-100 dark:bg-slate-800 opacity-70"
+                        isUpcoming ? "bg-slate-100" : "bg-slate-100 opacity-70"
                       )}>
                         <span className="text-[10px] text-slate-500 font-bold uppercase">{format(new Date(event.date_start), 'MMM')}</span>
                         <span className={cn(
@@ -239,11 +239,11 @@ export default function Home() {
                         )}>{format(new Date(event.date_start), 'dd')}</span>
                       </div>
                       <div>
-                        <h5 className="font-bold text-slate-800 dark:text-slate-200 text-sm line-clamp-1 group-hover:text-primary transition-colors">{event.title}</h5>
+                        <h5 className="font-bold text-slate-800 text-sm line-clamp-1 group-hover:text-primary transition-colors">{event.title}</h5>
                         <p className="text-xs text-slate-500 mt-1 line-clamp-1">{event.location || 'Main Hall'} • {format(new Date(event.date_start), 'HH:mm')}</p>
                         <span className={cn(
                           "text-[10px] font-medium mt-2 inline-block px-1.5 py-0.5 rounded",
-                          isUpcoming ? "text-primary bg-primary/10" : "text-slate-400 bg-slate-100 dark:bg-slate-800"
+                          isUpcoming ? "text-primary bg-primary/10" : "text-slate-400 bg-slate-100"
                         )}>
                           {isUpcoming ? 'Upcoming' : 'Archived'}
                         </span>
@@ -258,11 +258,11 @@ export default function Home() {
       </section>
 
       {/* Gallery Section */}
-      <section id="gallery" className="py-20 bg-surface-light dark:bg-surface-dark/20">
+      <section id="gallery" className="py-20 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <span className="text-primary font-medium tracking-wider uppercase text-sm">Gallery</span>
-            <h2 className="text-3xl font-bold mt-2 text-slate-900 dark:text-white">Moments of Tranquility</h2>
+            <h2 className="text-3xl font-bold mt-2 text-slate-900">Moments of Tranquility</h2>
           </div>
 
           <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
@@ -297,8 +297,8 @@ export default function Home() {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
               <span className="text-primary font-medium tracking-wider uppercase text-sm">Location</span>
-              <h2 className="text-3xl font-bold text-slate-900 dark:text-white">Visit Our Mosque</h2>
-              <p className="text-slate-600 dark:text-slate-300 text-lg leading-relaxed">
+              <h2 className="text-3xl font-bold text-slate-900">Visit Our Mosque</h2>
+              <p className="text-slate-600 text-lg leading-relaxed">
                 We are conveniently located in the heart of South Jakarta. Our facilities are open daily for prayers and community activities.
               </p>
 
@@ -308,8 +308,8 @@ export default function Home() {
                     <MapPin className="w-5 h-5" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-slate-900 dark:text-white">Address</h4>
-                    <p className="text-slate-600 dark:text-slate-400">Jl. Merpati Indah No. 45<br />Jakarta Selatan, 12345</p>
+                    <h4 className="font-bold text-slate-900">Address</h4>
+                    <p className="text-slate-600">Jl. Merpati Indah No. 45<br />Jakarta Selatan, 12345</p>
                   </div>
                 </div>
 
@@ -318,8 +318,8 @@ export default function Home() {
                     <Clock className="w-5 h-5" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-slate-900 dark:text-white">Opening Hours</h4>
-                    <p className="text-slate-600 dark:text-slate-400">Daily: 04:00 AM - 22:00 PM</p>
+                    <h4 className="font-bold text-slate-900">Opening Hours</h4>
+                    <p className="text-slate-600">Daily: 04:00 AM - 22:00 PM</p>
                   </div>
                 </div>
               </div>
@@ -329,7 +329,7 @@ export default function Home() {
               </button>
             </div>
 
-            <div className="h-[400px] rounded-2xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-800">
+            <div className="h-[400px] rounded-2xl overflow-hidden shadow-lg border border-slate-200">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.059438069637!2d106.78123431476906!3d-6.255902995471903!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f10f81e82a3f%3A0x4a4a4a4a4a4a4a4a!2sJakarta!5e0!3m2!1sen!2sid!4v1625641234567!5m2!1sen!2sid"
                 width="100%"
@@ -345,7 +345,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer id="footer" className="bg-background-dark text-white pt-16 pb-8">
+      <footer id="footer" className="bg-slate-900 text-white pt-16 pb-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
             {/* Brand */}
