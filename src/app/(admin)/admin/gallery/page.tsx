@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { Trash2, Upload, Star } from 'lucide-react';
 import Image from 'next/image';
+import { cn } from '@/lib/utils';
 
 export default function GalleryAdminPage() {
     const [images, setImages] = useState<any[]>([]);
@@ -15,6 +16,7 @@ export default function GalleryAdminPage() {
         const { data } = await supabase
             .from('gallery')
             .select('*')
+            .is('event_id', null)
             .order('created_at', { ascending: false });
         if (data) setImages(data);
         setLoading(false);
@@ -34,7 +36,6 @@ export default function GalleryAdminPage() {
         const filePath = `${fileName}`;
 
         try {
-            // 1. Upload to Storage
             const { error: uploadError } = await supabase.storage
                 .from('gallery')
                 .upload(filePath, file);
@@ -43,7 +44,6 @@ export default function GalleryAdminPage() {
 
             const { data } = supabase.storage.from('gallery').getPublicUrl(filePath);
 
-            // 2. Insert to DB
             const { error: dbError } = await supabase.from('gallery').insert([
                 {
                     image_url: data.publicUrl,
@@ -61,11 +61,8 @@ export default function GalleryAdminPage() {
         }
     };
 
-    const handleDelete = async (id: string, imageUrl: string) => {
+    const handleDelete = async (id: string) => {
         if (!confirm('Hapus foto ini?')) return;
-
-        // Optional: Delete from storage too if you parse the path from URL
-        // For now just delete record
 
         const { error } = await supabase.from('gallery').delete().eq('id', id);
         if (!error) {
@@ -75,10 +72,28 @@ export default function GalleryAdminPage() {
         }
     };
 
+    const toggleCarousel = async (id: string, currentValue: boolean) => {
+        const { error } = await supabase
+            .from('gallery')
+            .update({ is_carousel: !currentValue })
+            .eq('id', id);
+
+        if (!error) {
+            setImages(prev => prev.map(img =>
+                img.id === id ? { ...img, is_carousel: !currentValue } : img
+            ));
+        } else {
+            alert('Gagal mengubah status carousel: ' + error.message);
+        }
+    };
+
     return (
         <div>
             <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold text-slate-800">Kelola Galeri</h2>
+                <div>
+                    <h2 className="text-2xl font-bold text-slate-800">Kelola Galeri</h2>
+                    <p className="text-sm text-slate-500 mt-1">Klik ⭐ untuk menampilkan gambar di carousel homepage</p>
+                </div>
                 <div className="relative">
                     <input
                         type="file"
@@ -102,21 +117,44 @@ export default function GalleryAdminPage() {
                 ) : (
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         {images.map((item) => (
-                            <div key={item.id} className="relative aspect-square rounded-lg overflow-hidden group border border-slate-200">
+                            <div
+                                key={item.id}
+                                className={cn(
+                                    "relative aspect-square rounded-lg overflow-hidden group border-2 transition-colors",
+                                    item.is_carousel ? "border-amber-400 ring-2 ring-amber-200" : "border-slate-200"
+                                )}
+                            >
                                 <Image
                                     src={item.image_url}
                                     alt="Gallery"
                                     fill
                                     className="object-cover"
                                 />
-                                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                                     <button
-                                        onClick={() => handleDelete(item.id, item.image_url)}
+                                        onClick={() => toggleCarousel(item.id, !!item.is_carousel)}
+                                        className={cn(
+                                            "p-2 rounded-full transition-colors",
+                                            item.is_carousel
+                                                ? "bg-amber-500 text-white hover:bg-amber-600"
+                                                : "bg-white/80 text-slate-700 hover:bg-amber-400 hover:text-white"
+                                        )}
+                                        title={item.is_carousel ? "Hapus dari carousel" : "Tambah ke carousel"}
+                                    >
+                                        <Star className={cn("w-4 h-4", item.is_carousel && "fill-current")} />
+                                    </button>
+                                    <button
+                                        onClick={() => handleDelete(item.id)}
                                         className="bg-red-600 text-white p-2 rounded-full hover:bg-red-700 transition-colors"
                                     >
                                         <Trash2 className="w-4 h-4" />
                                     </button>
                                 </div>
+                                {item.is_carousel && (
+                                    <div className="absolute top-2 right-2 bg-amber-500 text-white p-1 rounded-full">
+                                        <Star className="w-3 h-3 fill-current" />
+                                    </div>
+                                )}
                             </div>
                         ))}
                     </div>

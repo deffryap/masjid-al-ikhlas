@@ -13,6 +13,7 @@ export interface GalleryItem {
     id: string;
     caption: string | null;
     image_url: string;
+    is_carousel: boolean;
     created_at: string;
 }
 

@@ -11,12 +11,15 @@ import { supabase } from '@/lib/supabase';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import EventModal from '@/components/features/events/EventModal';
+import GalleryCarousel from '@/components/features/gallery/GalleryCarousel';
 
 export default function Home() {
   const [events, setEvents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [galleryImages, setGalleryImages] = useState<any[]>([]);
+  const [showAllGallery, setShowAllGallery] = useState(false);
 
   useEffect(() => {
     async function fetchEvents() {
@@ -36,6 +39,24 @@ export default function Home() {
     }
 
     fetchEvents();
+
+    async function fetchGalleryImages() {
+      try {
+        const { data, error } = await supabase
+          .from('gallery')
+          .select('*')
+          .eq('is_carousel', false)
+          .is('event_id', null)
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+        setGalleryImages(data || []);
+      } catch (error) {
+        console.error('Error fetching gallery:', error);
+      }
+    }
+
+    fetchGalleryImages();
   }, []);
 
   // Filter Logic
@@ -263,31 +284,50 @@ export default function Home() {
           <div className="text-center mb-12">
             <span className="text-primary font-medium tracking-wider uppercase text-sm">Gallery</span>
             <h2 className="text-3xl font-bold mt-2 text-slate-900">Moments of Tranquility</h2>
+            <div className="w-16 h-1 bg-primary mx-auto mt-4 rounded-full"></div>
           </div>
 
-          <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
-            {[
-              'https://images.unsplash.com/photo-1542042958-37c223ebbb36?q=80&w=800', // Mosque
-              'https://images.unsplash.com/photo-1609599006353-e629aaabfeae?q=80&w=800', // Quran
-              'https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?q=80&w=800', // Charity
-              'https://images.unsplash.com/photo-1519818187420-8e49de7fc4f2?q=80&w=800', // Kids
-              'https://images.unsplash.com/photo-1545952497-7f88abb094e0?q=80&w=800', // Ornament
-              'https://images.unsplash.com/photo-1584661156681-5405252b4159?q=80&w=800'  // Crowd
-            ].map((src, i) => (
-              <div key={i} className="break-inside-avoid rounded-xl overflow-hidden group relative">
-                <Image
-                  src={src}
-                  alt="Gallery Image"
-                  width={600}
-                  height={400}
-                  className="w-full h-auto transform transition-transform duration-500 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                  <span className="text-white font-medium">View Image</span>
-                </div>
+          {/* Carousel Loop */}
+          <GalleryCarousel />
+
+          {/* Gallery Grid */}
+          {galleryImages.length > 0 && (
+            <div>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {(showAllGallery ? galleryImages : galleryImages.slice(0, 4)).map((img, i) => (
+                  <motion.div
+                    key={img.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: i * 0.1 }}
+                    className="relative aspect-square rounded-xl overflow-hidden group shadow-md border border-slate-100"
+                  >
+                    <Image
+                      src={img.image_url}
+                      alt={img.caption || 'Gallery'}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                      <span className="text-white font-medium text-sm">View</span>
+                    </div>
+                  </motion.div>
+                ))}
               </div>
-            ))}
-          </div>
+              {galleryImages.length > 4 && (
+                <div className="text-center mt-8">
+                  <button
+                    onClick={() => setShowAllGallery(!showAllGallery)}
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-white border border-slate-200 text-slate-700 rounded-lg font-medium hover:border-primary hover:text-primary transition-colors shadow-sm"
+                  >
+                    {showAllGallery ? 'Show Less' : 'View All'}
+                    <ArrowRight className={cn('w-4 h-4 transition-transform', showAllGallery && 'rotate-90')} />
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </section>
 
